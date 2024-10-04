@@ -1,0 +1,137 @@
+<?php
+     ?>
+<?php @$id = $_GET['id']; ?>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <?php include("asset/css.php"); ?>
+</head>
+
+<body>
+  <!-- sidebar -->
+  <?php include("asset/sidebar.php"); ?>
+  <!-- sidebar end -->
+
+  <!-- Main content -->
+  <div class="main-content" id="panel">
+    <!-- navbar -->
+    <?php include("asset/navbar.php"); ?>
+    <!-- navbar end -->
+<?php
+$query = $mysqli->query("SELECT nama_barang FROM barang WHERE id_barang='$id'");
+$nbarang = $query->fetch_object();?>
+    <!-- Header -->
+    <div class="header bg-primary pb-6">
+      <div class="container-fluid">
+        <div class="header-body">
+          <div class="row align-items-center py-4">
+            <div class="col-lg-6 col-7">
+              <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                  <li class="breadcrumb-item"><a href="#"><i class="fa fa-home"></i></a></li>
+                  <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                  <li class="breadcrumb-item active" aria-current="page"><?php echo $nbarang->nama_barang; ?></li>
+                </ol>
+              </nav>
+            </div>
+            <div class="col-lg-6 col-5 text-right">
+              <a href="add-unit.php?id=<?= $id; ?>" class="btn btn-sm btn-neutral">Tambah Unit</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Page content -->
+    <div class="container-fluid mt--6">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card">
+            <div class="card-header border-0">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h3 class="mb-0"></h3>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <!-- Projects table -->
+              <table id="file" class="table striped">
+                <thead>
+                  <tr>
+                    <td width="5%"><strong>Serial Number</strong></td>
+                    <td width="5%"><strong>Status</strong></td>
+                    <td width="5%"><strong>Location/user</strong></td>
+                    <td width="5%"><strong>Last Updated by</strong></td>
+                    <td width="5%"><strong>Comment</strong></td>
+                    <td width="5%"><strong>Aksi</strong></td>
+                  </tr>
+                </thead>
+               <tbody>
+                  <?php
+                  $query = $mysqli->query("SELECT barang_unit.serial_number AS serial_number ,barang_unit.id_unit AS id_unit, barang_unit.status AS status, user.nama_user AS nama_user, gudang.Nama_gudang AS nama_gudang, employee.emp_name AS emp_name, barang_unit.comment AS comment
+FROM barang_unit 
+LEFT JOIN barang 
+  ON barang.id_barang = barang_unit.id_barang
+LEFT JOIN gudang
+  ON barang_unit.id_gudang = gudang.id_gudang
+LEFT JOIN employee
+  ON barang_unit.id_employee = employee.id_employee
+LEFT JOIN user
+  ON user.id_user = barang_unit.id_user
+WHERE barang_unit.id_barang = $id");
+                  while ($barang = $query->fetch_object()) { ?>
+                    <tr>
+                    <?php $stats_b = $barang->status;?>
+                        <td width="5%"><?= $barang->serial_number; ?></td>
+                        <?php if ($stats_b == 0): ?>
+                            <td width="5%">Available In Storage</td>
+                        <?php elseif ($stats_b == 1): ?>
+                            <td width="5%">In Use</td>
+                        <?php elseif ($stats_b == 2): ?>
+                            <td width="5%">In-repair</td>
+                        <?php elseif ($stats_b == 3): ?>
+                            <td width="5%">Total lost</td>
+                        <?php else: ?>
+                            <td width="5%">Unknown status</td>
+                        <?php endif; ?>                                        
+                        <?php                        
+                        if ($stats_b == 0): ?>
+                            <td width="5%"><?= $barang->nama_gudang; ?></td>
+                        <?php elseif ($stats_b == 1): ?>
+                            <td width="5%"><?= $barang->emp_name; ?></td>
+                        <?php elseif ($stats_b == 2): ?>
+                            <td width="5%">Unavailable due to repair</td>
+                        <?php elseif ($stats_b == 3): ?>
+                            <td width="5%">Unavailable due to total loss</td>
+                        <?php else: ?>
+                            <td width="5%">Unknown status</td>
+                        <?php endif; ?>
+                        <?php if( $barang->nama_user==NULL){?>
+                          <td>DELETED USER</td>
+                          <?php } else {?>
+                        <td><?= $barang->nama_user; ?></td>
+                        <?php } ?>
+                        <td><?= $barang->comment; ?></td>
+                        <td>
+                            <a href="update-status.php?id=<?= $barang->id_unit; ?>" class="btn btn-sm btn-info">Ubah status</a>
+                        </td>
+                    </td>
+                  </tr>
+                  <?php
+                } ?>
+              </tbody>
+            </table>
+            <!-- end table -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <?php include("asset/footer.php"); ?>
+  </div>
+</div>
+<?php include("asset/js.php"); ?>
+</body>
+
+</html>
