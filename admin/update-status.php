@@ -61,7 +61,7 @@ $nbarang = $query->fetch_object();
               <div class="row align-items-center">
                 <div class="col-8">
                   <?php if (isset($id)): ?>
-                    <h3 class="mb-0">Ubah Status <?= $nbarang->nama_barang?> Unit <?= $barang_unit->id_unit?></h3>
+                    <h3 class="mb-0">Ubah Status <?= $nbarang->nama_barang?> Unit <?= $barang_unit->serial_number?></h3>
                   <?php else: ?>
                     <h3 class="mb-0">ERR NO ID</h3>
                   <?php endif; ?>
@@ -89,12 +89,12 @@ $nbarang = $query->fetch_object();
                       <div class="col-lg-6">
                         <div class="form-group">
                           <label class="form-control-label" for="input-sku">Status</label>
-                          <select class="form-control" name="status" id="status">
+                          <select class="form-control" name="status" id="status" required>
                                 <option value="">Pilih Status</option>
-                                <option value="0">available</option>
-                                <option value="1">In-Use</option>
-                                <option value="2">In-Repair</option>
-                                <option value="3">Total Loss</option>
+                                <option value="0">Tersedia</option>
+                                <option value="1">Dipinjam/Digunakan</option>
+                                <option value="2">Dalam Perbaikan</option>
+                                <option value="3">Rusak Total/Hilang</option>
                             </select>
                         </div>
                       </div>
@@ -103,7 +103,7 @@ $nbarang = $query->fetch_object();
                     <div class="row">
                       <div class="col-lg-6">
                         <div class="form-group">
-                          <label class="form-control-label" for="gudang">Pilih Gudang !Pilih jika memilih status available!</label>
+                          <label class="form-control-label" for="gudang">Pilih Gudang </label>
                             <select   class="form-control" name="idgudang" id="gudang">
                                 <option value="">Pilih Gudang</option>
                                 <?php while ($gudang = $gudang_query->fetch_object()): ?>
@@ -114,13 +114,29 @@ $nbarang = $query->fetch_object();
                       </div>  
                       <div class="col-lg-6">
                         <div class="form-group">
-                          <label class="form-control-label" for="empid">Pilih Karyawan !Pilih jika memilih status In-Use!</label>
+                          <label class="form-control-label" for="empid">Pilih Karyawan </label>
                             <select   class="form-control" name="empid" id="empid">
-                                <option value="">Pilih Employee</option>
+                                <option value="">Pilih Karyawan</option>
                                 <?php while ($emp_data = $employee_q->fetch_object()): ?>
                                     <option value="<?= $emp_data->id_employee; ?>"><?= $emp_data->emp_name; ?></option>
                                 <?php endwhile; ?>
                             </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          <label class="form-control-label" for="condition-input">Pilih Kondisi</label>
+                            <select   class="form-control" name="condition" id="condition" required>
+                                <option value="">Kondisi Barang</option>
+                                    <option value="0">Tidak Ada Kerusakan</option>
+                                    <option value="1">Kerusakan Ringan</option>
+                                    <option value="2">Kerusakan Sedang. Komponen hilang, masih fungsional</option>
+                                    <option value="3">Kerusakan Berat. Butuh perbaikan</option>
+                                    <option value="4">Rusak Total</option>
+                            </select>
+                            
                         </div>
                       </div>
                     </div>

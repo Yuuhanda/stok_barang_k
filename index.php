@@ -1,17 +1,12 @@
             
-<?php
-
-//if ($_SESSION['id_user'] != '') {
-//    header("Location:admin/dashboard.php");
-//  }
-?>
+<?php @$alert = $_GET['alert'];?>
 <!DOCTYPE html>
 <html>
 
 <head>
   <meta charset="utf-8">
   <title>Login</title>
-
+            
   <?php include("css.php"); ?>
 </head>
 
@@ -66,6 +61,9 @@
           <div class="col-xl-5 col-lg-6 col-md-8 px-5">
             <?php if (isset($_GET['id'])): ?>
               <h1 class="text-white">Username atau Password Salah!</h1>
+            <?php endif; ?>
+            <?php if ($alert==1): ?>
+              <h1 class="text-white">Akun Admin non-aktif</h1>
             <?php endif; ?>
           </div>
         </div>
