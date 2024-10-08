@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Master Item</title>
+  <title>Kelola Unit</title>
   <?php include("asset/css.php"); ?>
 </head>
 
@@ -28,13 +28,11 @@
                 <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                   <li class="breadcrumb-item"><a href="#"><i class="fa fa-home"></i></a></li>
                   <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Master Inventory</li>
+                  <li class="breadcrumb-item active" aria-current="page">Kelola Unit</li>
                 </ol>
               </nav>
             </div>
-            <div class="col-lg-6 col-5 text-right">
-              <a href="add-item.php" class="btn btn-sm btn-neutral">Tambah Barang</a>
-            </div>
+            
           </div>
         </div>
       </div>
@@ -88,7 +86,7 @@
                       <td><?= $lost_d->lost;?></td>
                       <td>
                         <!-- <a href="add-item.php" class="btn btn-sm btn-danger">Hapus</a> -->
-                        <a href="item-detail.php?id=<?= $barang->id_barang; ?>" class="btn btn-sm btn-info">Lihat Detail</a>
+                        <a href="add-unit.php?id=<?= $barang->id_barang; ?>" class="btn btn-sm btn-info">Tambah Unit</a>
                       </td>
                     </td>
                   </tr>

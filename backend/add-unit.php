@@ -14,7 +14,7 @@ if ($gudang_check->num_rows == 0) {
     exit();
 }
 
-if ($mysqli->query("INSERT INTO barang_unit (id_barang, status, id_employee, id_gudang, id_user, comment, serial_number) VALUES ('$id_barang', '0', NULL, '$id_gudang', '$id_admin', 'New Unit', '$serial_n')")) {
+if ($mysqli->query("INSERT INTO barang_unit (id_barang, status, id_employee, id_gudang, id_user, comment, serial_number, kondisi) VALUES ('$id_barang', '0', NULL, '$id_gudang', '$id_admin', 'New Unit', '$serial_n', '0')")) {
     header('Location: ../admin/item-detail.php?id=' . $id_barang);   
     exit();
 } else {

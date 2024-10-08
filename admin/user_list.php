@@ -9,7 +9,7 @@
 <body>
 
   <?php if (isset($_GET['alert'])): ?>
-    <script>alert('Tidak bisa melakukan penghapusan, karna ada relasi');</script>
+    <script>alert('Tidak bisa melakukan penghapusan, karena ada relasi');</script>
   <?php endif; ?>
   <!-- sidebar -->
   <?php include("asset/sidebar.php"); ?>
@@ -25,6 +25,8 @@
     $admindata = $adquery->fetch_object();
     $admin_level = $admindata->level;
     ?>
+
+    
     <!-- Header -->
     <div class="header bg-primary pb-6">
       <div class="container-fluid">
@@ -35,12 +37,12 @@
                 <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                   <li class="breadcrumb-item"><a href="#"><i class="fa fa-home"></i></a></li>
                   <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Master User</li>
+                  <li class="breadcrumb-item active" aria-current="page">Master Admin</li>
                 </ol>
               </nav>
             </div>
             <div class="col-lg-6 col-5 text-right">
-              <a href="update-user.php" class="btn btn-sm btn-neutral">Tambah User</a>
+              <a href="update-user.php" class="btn btn-sm btn-neutral">Tambah Admin</a>
               <!-- <a href="#" class="btn btn-sm btn-neutral">Filters</a> -->
             </div>
           </div>
@@ -77,12 +79,24 @@
                 $data = $mysqli->query("SELECT * FROM user");
                 if ($admin_level == 0) {
                     while ($user_data = $data->fetch_object()) {
-                  ?>
+                  $ban_status = $user_data->ban_status;?>
                     <tr>
                       <th scope="row"><?= $user_data->nama_user; ?></th>
                       <td><?= $user_data->email; ?></td>
                       <td>
-                        <a href="../backend/delete-user.php?id=<?= $user_data->id_user; ?>" class="btn btn-sm btn-danger">Hapus</a>
+                        <?php if($ban_status==0): ?>
+                        <a href="../backend/ban-user.php?id=<?= $user_data->id_user; ?>" 
+                           class="btn btn-sm btn-danger" 
+                           onclick="return confirm('Apakah anda yakin ingin menon-aktifkan admin ini?');">
+                           Non-Aktifkan
+                        </a>
+                        <?php else : ?>
+                          <a href="../backend/ban-user.php?id=<?= $user_data->id_user; ?>" 
+                           class="btn btn-sm btn-info" 
+                           onclick="return confirm('Apakah anda yakin ingin mengaktifkan admin ini?');">
+                           Aktifkan
+                        </a>
+                        <?php endif ?>
                         <a href="update-user.php?id=<?= $user_data->id_user; ?>" class="btn btn-sm btn-info">Ubah</a>
                       </td>
                     </tr>
@@ -94,7 +108,7 @@
                     <tr>
                       <th scope="row"><?= $user_data->nama_user; ?></th>
                       <td><?= $user_data->email; ?></td>
-                      <td>NO AUTHORITY</td>
+                      <td>Hanya Super Admin!</td>
                     </tr>
                   <?php
                     }
@@ -111,7 +125,9 @@
   </div>
 </div>
 
+
 <?php include("asset/js.php"); ?>
 </body>
+
 
 </html>

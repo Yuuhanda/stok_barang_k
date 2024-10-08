@@ -5,7 +5,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Barang Detail</title>
+  <title>Barang Kondisi Rusak</title>
   <?php include("asset/css.php"); ?>
 </head>
 
@@ -19,9 +19,6 @@
     <!-- navbar -->
     <?php include("asset/navbar.php"); ?>
     <!-- navbar end -->
-<?php
-$query = $mysqli->query("SELECT nama_barang FROM barang WHERE id_barang='$id'");
-$nbarang = $query->fetch_object();?>
     <!-- Header -->
     <div class="header bg-primary pb-6">
       <div class="container-fluid">
@@ -32,7 +29,7 @@ $nbarang = $query->fetch_object();?>
                 <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                   <li class="breadcrumb-item"><a href="#"><i class="fa fa-home"></i></a></li>
                   <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                  <li class="breadcrumb-item active" aria-current="page"><?php echo $nbarang->nama_barang; ?></li>
+                  <li class="breadcrumb-item active" aria-current="page">Barang Kondisi Rusak</li>
                 </ol>
               </nav>
             </div>
@@ -58,17 +55,18 @@ $nbarang = $query->fetch_object();?>
               <table id="file" class="table striped">
                 <thead>
                   <tr>
+                    <td width="5%"><strong>Nama Barang</strong></td>
                     <td width="5%"><strong>Nomor Seri</strong></td>
-                    <td width="5%"><strong>Status</strong></td>
                     <td width="5%"><strong>Gudang/User</strong></td>
                     <td width="5%"><strong>Data diperbarui oleh</strong></td>
                     <td width="5%"><strong>Komentar</strong></td>
                     <td width="5%"><strong>Kondisi</strong></td>
+                    <td width="5%"><strong>Aksi</strong></td>
                   </tr>
                 </thead>
                <tbody>
                   <?php
-                  $query = $mysqli->query("SELECT barang_unit.kondisi AS kondisi, barang_unit.serial_number AS serial_number ,barang_unit.id_unit AS id_unit, barang_unit.status AS status, user.nama_user AS nama_user, gudang.Nama_gudang AS nama_gudang, employee.emp_name AS emp_name, barang_unit.comment AS comment
+                  $query = $mysqli->query("SELECT barang.nama_barang AS nama_barang, barang_unit.kondisi AS kondisi, barang_unit.serial_number AS serial_number ,barang_unit.id_unit AS id_unit, barang_unit.status AS status, user.nama_user AS nama_user, gudang.Nama_gudang AS nama_gudang, employee.emp_name AS emp_name, barang_unit.comment AS comment
 FROM barang_unit 
 LEFT JOIN barang 
   ON barang.id_barang = barang_unit.id_barang
@@ -78,23 +76,13 @@ LEFT JOIN employee
   ON barang_unit.id_employee = employee.id_employee
 LEFT JOIN user
   ON user.id_user = barang_unit.id_user
-WHERE barang_unit.id_barang = $id");
+WHERE barang_unit.kondisi = 1 OR barang_unit.kondisi = 2 OR barang_unit.kondisi = 3");
                   while ($barang = $query->fetch_object()) { ?>
                     <tr>
                     <?php $stats_b = $barang->status;
                     $kondisi = $barang->kondisi;?>
-                        <td width="5%"><?= $barang->serial_number; ?></td>
-                        <?php if ($stats_b == 0): ?>
-                            <td width="5%">Tersedia/Disimpan</td>
-                        <?php elseif ($stats_b == 1): ?>
-                            <td width="5%">Dipinjam/Digunakan</td>
-                        <?php elseif ($stats_b == 2): ?>
-                            <td width="5%">Dalam Perbaikan</td>
-                        <?php elseif ($stats_b == 3): ?>
-                            <td width="5%">Rusak Total/Hilang</td>
-                        <?php else: ?>
-                            <td width="5%">Unknown status</td>
-                        <?php endif; ?>                                        
+                        <td width="5%"><?= $barang->nama_barang; ?></td>
+                        <td width="5%"><?= $barang->serial_number; ?></td>                                       
                         <?php                        
                         if ($stats_b == 0): ?>
                             <td width="5%"><?= $barang->nama_gudang; ?></td>
@@ -125,7 +113,10 @@ WHERE barang_unit.id_barang = $id");
                             <td width="5%">Rusak Total/Hilang</td>
                         <?php else: ?>
                             <td width="5%">Unknown status</td>
-                        <?php endif; ?>                            
+                        <?php endif; ?>
+                        <td>
+                            <a href="repair-unit.php?id=<?= $barang->id_unit ?>" class="btn btn-sm btn-info">Masukkan Untuk Perbaikan</a>
+                        </td>                           
                     </td>
                   </tr>
                   <?php

@@ -9,7 +9,7 @@
 <body>
 
   <?php if (isset($_GET['alert'])): ?>
-    <script>alert('Tidak bisa melakukan penghapusan, karna ada relasi');</script>
+    <script>alert('Tidak bisa melakukan penghapusan, masih ada barang di gudang');</script>
   <?php endif; ?>
   <!-- sidebar -->
   <?php include("asset/sidebar.php"); ?>
@@ -80,24 +80,28 @@
                     <tr>
                       <th scope="row"><?= $gudang_data->Nama_gudang; ?></th>
                       <td>
-                        <a href="../backend/delete-wh.php?id=<?= $gudang_data->id_gudang; ?>" class="btn btn-sm btn-danger">Hapus</a>
+                        
+                        <a href="../backend/delete-wh.php?id=<?= $gudang_data->id_gudang; ?>" 
+                           class="btn btn-sm btn-danger" 
+                           onclick="return confirm('Apakah anda yakin ingin menghapus data ini? Data dilarang dihapus jika masih ada barang di gudang');">
+                           Hapus
+                        </a>
                         <a href="update-wh.php?id=<?= $gudang_data->id_gudang; ?>" class="btn btn-sm btn-info">Ubah</a>
                       </td>
                     </tr>
                   <?php
                     }
                   } elseif($admin_level==1) {
-                    while ($user_data = $data->fetch_object()) {
-                  ?>
-                    <tr>
-                      <th scope="row"><?= $user_data->emp_name; ?></th>
-                      <th scope="row"><?= $user_data->email; ?></th>
-                      <th scope="row"><?= $user_data->phone; ?></th>
-                      <th scope="row"><?= $user_data->address; ?></th>
-                      <td>NO AUTHORITY</td>
-                    </tr>
-                  <?php
-                    }
+                    while ($gudang_data = $data->fetch_object()) {
+                      ?>
+                        <tr>
+                          <th scope="row"><?= $gudang_data->Nama_gudang; ?></th>
+                          <td>
+                            <a href="update-wh.php?id=<?= $gudang_data->id_gudang; ?>" class="btn btn-sm btn-info">Ubah</a>
+                          </td>
+                        </tr>
+                      <?php
+                        }
                   }
                   ?>
                     

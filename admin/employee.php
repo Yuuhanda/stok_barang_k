@@ -9,7 +9,7 @@
 <body>
 
   <?php if (isset($_GET['alert'])): ?>
-    <script>alert('Tidak bisa melakukan penghapusan, karna ada relasi');</script>
+    <script>alert('Tidak bisa melakukan penghapusan, karyawan masih meminjam barang');</script>
   <?php endif; ?>
   <!-- sidebar -->
   <?php include("asset/sidebar.php"); ?>
@@ -40,7 +40,7 @@
               </nav>
             </div>
             <div class="col-lg-6 col-5 text-right">
-              <a href="update-emp.php" class="btn btn-sm btn-neutral">Tambah User</a>
+              <a href="update-emp.php" class="btn btn-sm btn-neutral">Tambah Karyawan</a>
               <!-- <a href="#" class="btn btn-sm btn-neutral">Filters</a> -->
             </div>
           </div>
@@ -86,7 +86,11 @@
                       <th scope="row"><?= $user_data->phone; ?></th>
                       <th scope="row"><?= $user_data->address; ?></th>
                       <td>
-                        <a href="../backend/delete-emp.php?id=<?= $user_data->id_employee; ?>" class="btn btn-sm btn-danger">Hapus</a>
+                        <a href="../backend/delete-emp.php?id=<?= $user_data->id_employee; ?>" 
+                           class="btn btn-sm btn-danger" 
+                           onclick="return confirm('Apakah anda yakin ingin menghapus data karyawan ini?');">
+                           Hapus
+                        </a>
                         <a href="update-emp.php?id=<?= $user_data->id_employee; ?>" class="btn btn-sm btn-info">Ubah</a>
                       </td>
                     </tr>

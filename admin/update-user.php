@@ -93,15 +93,16 @@
                         <div class="form-group">
                           <label class="form-control-label" for="input-first-name">Admin level</label>
                           <select class="form-control" name="level" id="level">
+                            <option value ="<?=$data->level?>">Level Admin</option>
                             <option value="0">Super Admin</option>
-                            <option value="1">Low level admin</option>
+                            <option value="1">Admin</option>
                           </select>
                         </div>
                       </div>
                       <div class="col-lg-12">
                         <div class="form-group">
                           <label class="form-control-label" for="input-last-name">Password</label>
-                          <input type="password" id="input-last-name" name="password" class="form-control" value="<?= $data->password; ?>">
+                          <input type="password" id="input-last-name" name="password" class="form-control" >
                         </div>
                       </div>
                     </div>
@@ -143,7 +144,7 @@
                           <label class="form-control-label" for="input-first-name">Admin Level</label>
                           <select class="form-control" name="level" id="level" required>
                             <option value="0">Super Admin</option>
-                            <option value="1">Low level admin</option>
+                            <option value="1">Admin</option>
                           </select>
                         </div>
                       </div>

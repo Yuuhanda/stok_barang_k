@@ -33,9 +33,45 @@ if ($_SESSION['id_user'] == '') {
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="user_list.php">
+            <a class="nav-link active" href="unit-manage.php">
               <i class="ni ni-app text-green"></i>
-              <span class="nav-link-text">User</span>
+              <span class="nav-link-text">Kelola Unit</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="unit-lending.php">
+              <i class="ni ni-app text-green"></i>
+              <span class="nav-link-text">Peminjaman</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="return-unit.php">
+              <i class="ni ni-app text-green"></i>
+              <span class="nav-link-text">Pengembalian</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="Broken-List.php">
+              <i class="ni ni-app text-green"></i>
+              <span class="nav-link-text">Barang Kondisi Rusak</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="Repair-List.php">
+              <i class="ni ni-app text-green"></i>
+              <span class="nav-link-text">Barang-Perbaikan-Servis</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="search-update.php">
+              <i class="ni ni-app text-green"></i>
+              <span class="nav-link-text">Koreksi Data</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="warehouse.php">
+              <i class="ni ni-app text-green"></i>
+              <span class="nav-link-text">Gudang</span>
             </a>
           </li>
           <li class="nav-item">
@@ -44,10 +80,11 @@ if ($_SESSION['id_user'] == '') {
               <span class="nav-link-text">Karyawan</span>
             </a>
           </li>
+          
           <li class="nav-item">
-            <a class="nav-link" href="warehouse.php">
+            <a class="nav-link" href="user_list.php">
               <i class="ni ni-circle-08 text-yellow"></i>
-              <span class="nav-link-text">Warehouse</span>
+              <span class="nav-link-text">Daftar Admin</span>
             </a>
           </li>
         </ul>
