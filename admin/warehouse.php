@@ -67,7 +67,8 @@
             <table class="table align-items-center table-flush">
               <thead class="thead-light">
                 <tr>
-                  <th scope="col">Nama Gudan</th>
+                  <th scope="col">Nama Gudang</th>
+                  <th scope="col">id Gudang</th>
                   <th scope="col">Aksi</th>
                 </tr>
               </thead>
@@ -79,6 +80,7 @@
                   ?>
                     <tr>
                       <th scope="row"><?= $gudang_data->Nama_gudang; ?></th>
+                      <th scope="row"><?= $gudang_data->id_gudang; ?></th>
                       <td>
                         
                         <a href="../backend/delete-wh.php?id=<?= $gudang_data->id_gudang; ?>" 
@@ -116,6 +118,26 @@
 </div>
 
 <?php include("asset/js.php"); ?>
+<!-- Include DataTables JS -->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script>
+  $(document).ready(function () {
+    if ($.fn.DataTable.isDataTable('#file')) {
+        // Destroy the existing instance before reinitializing
+        $('#file').DataTable().destroy();
+    }
+    // Initialize DataTables
+    var table = $('#file').DataTable({
+      "pageLength": 10 // Default value
+    });
+
+    // Change page length dynamically
+    $('#rowsPerPage').on('change', function () {
+      var length = $(this).val();
+      table.page.len(length).draw();
+    });
+  });
+</script>
 </body>
 
 </html>

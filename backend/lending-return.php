@@ -34,22 +34,22 @@ if($status != 1){
 if ($unit_check->num_rows != 0) {
     if ($condition==0){
         $mysqli->query("UPDATE barang_unit SET status = '0' , id_employee = NULL, id_gudang='$id_gudang', id_user ='$id_admin', comment ='$comment', kondisi= '0' WHERE id_unit = '$id_unit'");
-        header('Location: ../admin/item-detail.php?id=' . $id_barang);   
+        header('Location: ../admin/return-unit.php');   
         exit();} elseif($condition==1){
         $mysqli->query("UPDATE barang_unit SET status = '0' , id_employee = NULL, id_gudang='$id_gudang', id_user ='$id_admin', comment ='$comment', kondisi = '1'  WHERE id_unit = '$id_unit'");
-        header('Location: ../admin/item-detail.php?id=' . $id_barang);   
+        header('Location: ../admin/return-unit.php');   
         exit();
     } elseif($condition==2){
         $mysqli->query("UPDATE barang_unit SET status = '0' , id_employee = NULL, id_gudang='$id_gudang', id_user ='$id_admin', comment ='$comment', kondisi= '2'  WHERE id_unit = '$id_unit'");
-        header('Location: ../admin/item-detail.php?id=' . $id_barang);   
+        header('Location: ../admin/return-unit.php');   
         exit();
     } elseif($condition==3){
         $mysqli->query("UPDATE barang_unit SET status = '0' , id_employee = NULL, id_gudang='$id_gudang', id_user ='$id_admin', comment ='$comment', kondisi= '3'  WHERE id_unit = '$id_unit'");
-        header('Location: ../admin/item-detail.php?id=' . $id_barang);   
+        header('Location: ../admin/return-unit.php');   
         exit();
     } elseif($condition==4){
         $mysqli->query("UPDATE barang_unit SET status = '3' , id_employee = NULL, id_gudang='$id_gudang', id_user ='$id_admin', comment ='$comment', kondisi= '4'  WHERE id_unit = '$id_unit'");
-        header('Location: ../admin/item-detail.php?id=' . $id_barang);   
+        header('Location: ../admin/return-unit.php');   
         exit();
     } else{
 

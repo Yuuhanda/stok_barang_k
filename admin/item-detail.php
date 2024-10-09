@@ -19,6 +19,9 @@
     <!-- navbar -->
     <?php include("asset/navbar.php"); ?>
     <!-- navbar end -->
+
+
+
 <?php
 $query = $mysqli->query("SELECT nama_barang FROM barang WHERE id_barang='$id'");
 $nbarang = $query->fetch_object();?>
@@ -54,6 +57,8 @@ $nbarang = $query->fetch_object();?>
               </div>
             </div>
             <div class="table-responsive">
+              
+              </div> 
               <!-- Projects table -->
               <table id="file" class="table striped">
                 <thead>
@@ -69,16 +74,16 @@ $nbarang = $query->fetch_object();?>
                <tbody>
                   <?php
                   $query = $mysqli->query("SELECT barang_unit.kondisi AS kondisi, barang_unit.serial_number AS serial_number ,barang_unit.id_unit AS id_unit, barang_unit.status AS status, user.nama_user AS nama_user, gudang.Nama_gudang AS nama_gudang, employee.emp_name AS emp_name, barang_unit.comment AS comment
-FROM barang_unit 
-LEFT JOIN barang 
-  ON barang.id_barang = barang_unit.id_barang
-LEFT JOIN gudang
-  ON barang_unit.id_gudang = gudang.id_gudang
-LEFT JOIN employee
-  ON barang_unit.id_employee = employee.id_employee
-LEFT JOIN user
-  ON user.id_user = barang_unit.id_user
-WHERE barang_unit.id_barang = $id");
+                          FROM barang_unit 
+                          LEFT JOIN barang 
+                            ON barang.id_barang = barang_unit.id_barang
+                          LEFT JOIN gudang
+                            ON barang_unit.id_gudang = gudang.id_gudang
+                          LEFT JOIN employee
+                            ON barang_unit.id_employee = employee.id_employee
+                          LEFT JOIN user
+                            ON user.id_user = barang_unit.id_user
+                          WHERE barang_unit.id_barang = $id");
                   while ($barang = $query->fetch_object()) { ?>
                     <tr>
                     <?php $stats_b = $barang->status;
@@ -133,14 +138,50 @@ WHERE barang_unit.id_barang = $id");
               </tbody>
             </table>
             <!-- end table -->
+            <div class="col-lg-6 col-5 text-left">
+            <!-- Rows per page dropdown 
+            <div class="form-group">
+                    <label for="rowsPerPage" style="font-size: 12px;">Rows per page:</label>
+                    <select id="rowsPerPage" class="form-control" style="width: 50px; font-size: 12px; padding: 2px;">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="200">200</option>
+                        <option value="500">500</option>
+                    </select>
+                </div>-->
+            </div>
           </div>
         </div>
       </div>
     </div>
+    
     <?php include("asset/footer.php"); ?>
   </div>
 </div>
 <?php include("asset/js.php"); ?>
+
+<!-- Include DataTables JS -->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script>
+  $(document).ready(function () {
+    if ($.fn.DataTable.isDataTable('#file')) {
+        // Destroy the existing instance before reinitializing
+        $('#file').DataTable().destroy();
+    }
+    // Initialize DataTables
+    var table = $('#file').DataTable({
+      "pageLength": 10 // Default value
+    });
+
+    // Change page length dynamically
+    $('#rowsPerPage').on('change', function () {
+      var length = $(this).val();
+      table.page.len(length).draw();
+    });
+  });
+</script>
 </body>
 
 </html>
