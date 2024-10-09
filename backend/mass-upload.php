@@ -114,8 +114,8 @@ function generateSerialNumber($mysqli) {
         // Ensure that the SKU is in uppercase or as needed
         $sku = strtoupper($sku);
 
-        // Generate a random number between 1 and 10000
-        $random_number = rand(1, 10000);
+        // Generate a random number between 1 and 1000000
+        $random_number = rand(1, 1000000);
 
         // Ensure that the random number is always 4 digits (e.g., 0001, 0010)
         $random_number = str_pad($random_number, 4, '0', STR_PAD_LEFT);
