@@ -62,6 +62,12 @@ if ($_SESSION['id_user'] == '') {
               <span class="nav-link-text">Barang-Perbaikan-Servis</span>
             </a>
           </li>
+          <!--<li class="nav-item">
+            <a class="nav-link active" href="log-search.php">
+              <i class="ni ni-app text-green"></i>
+              <span class="nav-link-text">Riwayat penggunaan unit</span>
+            </a>
+          </li> -->
           <li class="nav-item">
             <a class="nav-link active" href="search-update.php">
               <i class="ni ni-app text-green"></i>

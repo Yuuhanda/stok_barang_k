@@ -103,7 +103,7 @@ WHERE barang_unit.id_barang = $id");
                         <?php elseif ($stats_b == 2): ?>
                             <td width="5%">Tidak Tersedia</td>
                         <?php elseif ($stats_b == 3): ?>
-                            <td width="5%">Tidak Tersedia</td>
+                            <td width="5%"><?= $barang->nama_gudang; ?></td>
                         <?php else: ?>
                             <td width="5%">Status tidak diketahui</td>
                         <?php endif; ?>
