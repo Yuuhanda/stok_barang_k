@@ -51,7 +51,6 @@
     <div class="container-fluid mt--6">
       <div class="row">
         <div class="col-xl-12 order-xl-1">
-          <div class="card">
             <div class="card-header">
               <div class="row align-items-center">
                 <div class="col-8">
@@ -60,6 +59,18 @@
                   <?php else: ?>
                     <h3 class="mb-0">ERR NO ID</h3>
                   <?php endif; ?>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-12 order-xl-1">
+          <div class="card">
+            <div class="card-header">
+              <div class="row align-items-center">
+                <div class="col-8">
+                  <button class="btn btn-primary my-4">Tambah Unit</button>
                 </div>
               </div>
             </div>
@@ -87,8 +98,9 @@
                       </div>  
                       <div class="col-lg-6">
                         <div class="form-group">
-                          <label class="form-control-label" for="serial_number">Serial Number</label>
-                          <input type="text" id="input-serial-number" name="snunit" class="form-control" placeholder="Serial Number" required>
+                          <label class="form-control-label" for="serial_number">Nomor Seri</label>
+                          <label class="form-control-label" for="serial_number">!Akan dibuat otomatis jika kosong!</label>
+                          <input type="text" id="input-serial-number" name="snunit" class="form-control" placeholder="Serial Number">
                         </div>
                       </div>  
                     </div>

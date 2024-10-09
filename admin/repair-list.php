@@ -1,6 +1,12 @@
 <?php
      ?>
 <?php @$id = $_GET['id']; ?>
+<?php @$alert = $_GET['alert'];?>
+<?php if ($alert==1): ?>
+        <script>alert('Nomor Seri Unit Tidak Ada');</script>
+    <?php elseif($alert==2): ?>
+        <script>alert('Unit dengan nomor seri ini tidak ada');</script>
+  <?php endif; ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -76,25 +82,13 @@ LEFT JOIN employee
   ON barang_unit.id_employee = employee.id_employee
 LEFT JOIN user
   ON user.id_user = barang_unit.id_user
-WHERE barang_unit.status= 3");
+WHERE barang_unit.status= '2'");
                   while ($barang = $query->fetch_object()) { ?>
                     <tr>
                     <?php $stats_b = $barang->status;
                     $kondisi = $barang->kondisi;?>
                         <td width="5%"><?= $barang->nama_barang; ?></td>
-                        <td width="5%"><?= $barang->serial_number; ?></td>                                       
-                        <?php                        
-                        if ($stats_b == 0): ?>
-                            <td width="5%"><?= $barang->nama_gudang; ?></td>
-                        <?php elseif ($stats_b == 1): ?>
-                            <td width="5%"><?= $barang->emp_name; ?></td>
-                        <?php elseif ($stats_b == 2): ?>
-                            <td width="5%">Tidak Tersedia</td>
-                        <?php elseif ($stats_b == 3): ?>
-                            <td width="5%">Tidak Tersedia</td>
-                        <?php else: ?>
-                            <td width="5%">Status tidak diketahui</td>
-                        <?php endif; ?>
+                        <td width="5%"><?= $barang->serial_number; ?></td>
                         <?php if( $barang->nama_user==NULL){?>
                           <td>DELETED USER</td>
                           <?php } else {?>

@@ -1,6 +1,7 @@
 <?php
      ?>
 <?php @$id = $_GET['id']; ?>
+<?php @$alert = $_GET['alert'];?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +9,11 @@
   <title>Barang Kondisi Rusak</title>
   <?php include("asset/css.php"); ?>
 </head>
-
+<?php if ($alert==1): ?>
+        <script>alert('Nomor Seri Unit Tidak Ada');</script>
+    <?php elseif($alert==2): ?>
+        <script>alert('Unit dengan nomor seri ini tidak ada di gudang');</script>
+  <?php endif; ?>
 <body>
   <!-- sidebar -->
   <?php include("asset/sidebar.php"); ?>
@@ -52,13 +57,12 @@
             </div>
             <div class="table-responsive">
               <!-- Projects table -->
-              <table id="file" class="table striped">
+              <table id="file" class="table striped" >
                 <thead>
                   <tr>
                     <td width="5%"><strong>Nama Barang</strong></td>
                     <td width="5%"><strong>Nomor Seri</strong></td>
                     <td width="5%"><strong>Gudang/User</strong></td>
-                    <td width="5%"><strong>Data diperbarui oleh</strong></td>
                     <td width="5%"><strong>Komentar</strong></td>
                     <td width="5%"><strong>Kondisi</strong></td>
                     <td width="5%"><strong>Aksi</strong></td>
@@ -76,7 +80,7 @@ LEFT JOIN employee
   ON barang_unit.id_employee = employee.id_employee
 LEFT JOIN user
   ON user.id_user = barang_unit.id_user
-WHERE barang_unit.kondisi = 1 OR barang_unit.kondisi = 2 OR barang_unit.kondisi = 3");
+WHERE barang_unit.kondisi = '1' OR barang_unit.kondisi = '2' OR barang_unit.kondisi = '3'");
                   while ($barang = $query->fetch_object()) { ?>
                     <tr>
                     <?php $stats_b = $barang->status;
@@ -89,17 +93,12 @@ WHERE barang_unit.kondisi = 1 OR barang_unit.kondisi = 2 OR barang_unit.kondisi 
                         <?php elseif ($stats_b == 1): ?>
                             <td width="5%"><?= $barang->emp_name; ?></td>
                         <?php elseif ($stats_b == 2): ?>
-                            <td width="5%">Tidak Tersedia</td>
+                            <td width="5%">Barang dalam perbaikan</td>
                         <?php elseif ($stats_b == 3): ?>
                             <td width="5%">Tidak Tersedia</td>
                         <?php else: ?>
                             <td width="5%">Status tidak diketahui</td>
                         <?php endif; ?>
-                        <?php if( $barang->nama_user==NULL){?>
-                          <td>DELETED USER</td>
-                          <?php } else {?>
-                        <td><?= $barang->nama_user; ?></td>
-                        <?php } ?>
                         <td><?= $barang->comment; ?></td>
                         <?php if ($kondisi == 0): ?>
                             <td width="5%">Tidak ada kerusakan</td>
@@ -115,7 +114,11 @@ WHERE barang_unit.kondisi = 1 OR barang_unit.kondisi = 2 OR barang_unit.kondisi 
                             <td width="5%">Unknown status</td>
                         <?php endif; ?>
                         <td>
-                            <a href="repair-unit.php?id=<?= $barang->id_unit ?>" class="btn btn-sm btn-info">Masukkan Untuk Perbaikan</a>
+                          <?php if($barang->status==0):?>  
+                          <a href="repair-unit.php?id=<?= $barang->id_unit ?>" class="btn btn-sm btn-info">Masukkan Untuk Perbaikan</a>
+                          <?php else:?>
+                          Barang tidak di gudang
+                          <?php endif?>
                         </td>                           
                     </td>
                   </tr>

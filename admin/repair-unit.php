@@ -5,7 +5,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Penegembalian Unit</title>
+  <title>Perbaikan Unit</title>
   <?php include("asset/css.php"); ?>
 </head>
 
@@ -26,8 +26,11 @@
     <?php include("asset/navbar.php"); ?>
     <!-- navbar end -->
     <?php
-
-
+$query_unit = $mysqli->query("SELECT * FROM barang_unit WHERE id_unit = '$id'");
+$barang_unit = $query_unit->fetch_object();
+$barang_id = $barang_unit->id_barang;
+$query = $mysqli->query("SELECT nama_barang FROM barang WHERE id_barang='$barang_id'");
+$nbarang = $query->fetch_object();  
 ?>
     <!-- Header -->
     <div class="header bg-primary pb-6">
@@ -39,13 +42,13 @@
                 <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                   <li class="breadcrumb-item"><a href="#"><i class="fa fa-home"></i></a></li>
                   <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Pinjam Barang </li>
+                    <li class="breadcrumb-item active" aria-current="page">Perbaikan Barang <?=$nbarang->nama_barang?> <?=$barang_unit->serial_number?></li>
 
                 </ol>
               </nav>
             </div>
             <div class="col-lg-6 col-5 text-right">
-              <a href="unit-lending.php" class="btn btn-sm btn-neutral">Kembali</a>
+              <a href="broken-list.php" class="btn btn-sm btn-neutral">Kembali</a>
               <!-- <a href="#" class="btn btn-sm btn-neutral">Filters</a> -->
             </div>
           </div>
@@ -67,60 +70,22 @@
             
               <div class="card-body">
                 
-                <form action="../backend/lending-return.php" method="post">
-                <?php $gudang_query = $mysqli->query("SELECT * FROM gudang"); ?>
+                <form action="../backend/unit-repair.php" method="post">
                   <h6 class="heading-small text-muted mb-4">Lengkapi Data Dibawah</h6>
                   <div class="pl-lg-4">
-                    <div class="row">
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                          <label class="form-control-label" for="input-serial-number">Nomor Seri</label>
-                          <input type="text" id="serialn" name="serialn" class="form-control" placeholder="Nomor Seri Unit" required>
-                            
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <label class="form-control-label" for="condition-input">Pilih Kondisi</label>
-                            <select   class="form-control" name="condition" id="condition" required>
-                                <option value="">Kondisi Barang</option>
-                                    <option value="0">Tidak Ada Kerusakan</option>
-                                    <option value="1">Kerusakan Ringan</option>
-                                    <option value="2">Kerusakan Sedang. Komponen hilang, masih fungsional</option>
-                                    <option value="3">Kerusakan Berat. Butuh perbaikan</option>
-                                    <option value="4">Rusak Total</option>
-                            </select>
-                            
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <label class="form-control-label" for="gudang">Pilih Gudang Pengembalian</label>
-                            <select   class="form-control" name="idgudang" id="gudang" required>
-                                <option value="">Pilih Gudang</option>
-                                <?php while ($gudang = $gudang_query->fetch_object()): ?>
-                                    <option value="<?= $gudang->id_gudang; ?>"><?= $gudang->Nama_gudang; ?></option>
-                                <?php endwhile; ?>
-                            </select>
-                        </div>
-                      </div> 
-                      
-                    </div>
                     <div class="row">
                       <div class="col-lg-6">
                         <div class="form-group">
                             <label class="form-control-label" for="input-nama-comment">Komentar</label>
+                            <label class="form-control-label" for="input-nama-comment">Informasi Tempat Perbaikan</label>
                             <input type="text" id="input-comment" name="comment" class="form-control" placeholder="Komentar" required>
                         </div>
                       </div>
                       </div>
                   </div>
+                  <input type="hidden" name="id_unit" value="<?= $barang_unit->id_unit; ?>">
                   <div class="text-center">
-                    <button class="btn btn-primary my-4">UBAH</button>
+                    <button class="btn btn-primary my-4">Kirim untuk perbaikan unit</button>
                   </div>
                   
                 </form>

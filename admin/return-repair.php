@@ -1,21 +1,14 @@
 <?php  ?>
 <?php @$id = $_GET['id']; ?>
-<?php @$alert = $_GET['alert'];?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Penegembalian Unit</title>
+  <title>Perbaikan Unit</title>
   <?php include("asset/css.php"); ?>
 </head>
 
 <body>
-    
-    <?php if ($alert==1): ?>
-        <script>alert('Nomor Seri Unit Tidak Ada, cek penulisan');</script>
-    <?php elseif($alert==2): ?>
-        <script>alert('Unit dengan nomor seri ini sedang tidak dipinjam');</script>
-  <?php endif; ?>
   <!-- sidebar -->
   <?php include("asset/sidebar.php"); ?>
   <!-- sidebar end -->
@@ -26,7 +19,11 @@
     <?php include("asset/navbar.php"); ?>
     <!-- navbar end -->
     <?php
-
+$query_unit = $mysqli->query("SELECT * FROM barang_unit WHERE id_unit = '$id'");
+$barang_unit = $query_unit->fetch_object();
+$barang_id = $barang_unit->id_barang;
+$query = $mysqli->query("SELECT nama_barang FROM barang WHERE id_barang='$barang_id'");
+$nbarang = $query->fetch_object();
 
 ?>
     <!-- Header -->
@@ -39,13 +36,16 @@
                 <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                   <li class="breadcrumb-item"><a href="#"><i class="fa fa-home"></i></a></li>
                   <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Pinjam Barang </li>
-
+                  <?php if (isset($id)): ?>
+                    <li class="breadcrumb-item active" aria-current="page">Barang Selesai Perbaikan <?=$nbarang->nama_barang?> <?=$barang_unit->serial_number?></li>
+                  <?php else: ?>
+                    <li class="breadcrumb-item active" aria-current="page">ERR NO ID</li>
+                  <?php endif; ?>
                 </ol>
               </nav>
             </div>
             <div class="col-lg-6 col-5 text-right">
-              <a href="unit-lending.php" class="btn btn-sm btn-neutral">Kembali</a>
+              <a href="dashboard.php" class="btn btn-sm btn-neutral">Kembali</a>
               <!-- <a href="#" class="btn btn-sm btn-neutral">Filters</a> -->
             </div>
           </div>
@@ -60,27 +60,32 @@
             <div class="card-header">
               <div class="row align-items-center">
                 <div class="col-8">
-                    <h3 class="mb-0">Pengembalian</h3>
+                  <?php if (isset($id)): ?>
+                    <h3 class="mb-0">Selesai Perbaikan <?= $nbarang->nama_barang?> Unit <?= $barang_unit->serial_number?></h3>
+                  <?php else: ?>
+                    <h3 class="mb-0">ERR NO ID</h3>
+                  <?php endif; ?>
                 </div>
               </div>
             </div>
-            
+            <?php if (isset($id)): ?>
+                <?php
+                $query = $mysqli->query("SELECT * FROM barang WHERE id_barang='$barang_id'");
+                $barang = $query->fetch_object();
+                $gudang_query = $mysqli->query("SELECT * FROM gudang");
+                $employee_q =$mysqli->query("SELECT emp_name, id_employee FROM employee")
+                ?>
               <div class="card-body">
-                
-                <form action="../backend/lending-return.php" method="post">
-                <?php $gudang_query = $mysqli->query("SELECT * FROM gudang"); ?>
+                <form action="../backend/repair-return.php" method="post">
                   <h6 class="heading-small text-muted mb-4">Lengkapi Data Dibawah</h6>
                   <div class="pl-lg-4">
                     <div class="row">
-                    <div class="col-lg-6">
+                      <div class="col-lg-6">
                         <div class="form-group">
-                          <label class="form-control-label" for="input-serial-number">Nomor Seri</label>
-                          <input type="text" id="serialn" name="serialn" class="form-control" placeholder="Nomor Seri Unit" required>
-                            
+                          <label class="form-control-label" for="input-nama-comment">Comment on unit</label>
+                          <input type="text" id="input-nama-comment" name="comment" class="form-control" value="<?= $barang_unit->comment; ?>">
                         </div>
                       </div>
-                    </div>
-                    <div class="row">
                       <div class="col-lg-6">
                         <div class="form-group">
                           <label class="form-control-label" for="condition-input">Pilih Kondisi</label>
@@ -99,7 +104,7 @@
                     <div class="row">
                       <div class="col-lg-6">
                         <div class="form-group">
-                          <label class="form-control-label" for="gudang">Pilih Gudang Pengembalian</label>
+                          <label class="form-control-label" for="gudang">Pilih Gudang </label>
                             <select   class="form-control" name="idgudang" id="gudang" required>
                                 <option value="">Pilih Gudang</option>
                                 <?php while ($gudang = $gudang_query->fetch_object()): ?>
@@ -108,24 +113,23 @@
                             </select>
                         </div>
                       </div> 
-                      
+                       
                     </div>
                     <div class="row">
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                            <label class="form-control-label" for="input-nama-comment">Komentar</label>
-                            <input type="text" id="input-comment" name="comment" class="form-control" placeholder="Komentar" required>
-                        </div>
-                      </div>
-                      </div>
+                      
+                    </div>
                   </div>
+                  <input type="hidden" name="id_unit" value="<?= $barang_unit->id_unit; ?>">
                   <div class="text-center">
-                    <button class="btn btn-primary my-4">UBAH</button>
+                    <button class="btn btn-primary my-4">Selesaikan Perbaikan</button>
                   </div>
-                  
                 </form>
               </div>
-           
+            <?php else: ?>
+              <div class="card-body">
+                ERR NO ID
+              </div>
+            <?php endif; ?>
           </div>
         </div>
       </div>

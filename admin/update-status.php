@@ -1,5 +1,6 @@
 <?php  ?>
 <?php @$id = $_GET['id']; ?>
+<?php @$alert = $_GET['alert'];?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +8,11 @@
   <title>Inventory</title>
   <?php include("asset/css.php"); ?>
 </head>
-
+    <?php if ($alert==1): ?>
+        <script>alert('Nomor Seri Unit Tidak Ada, cek penulisan');</script>
+    <?php elseif($alert==2): ?>
+        <script>alert('Unit dengan nomor seri ini sedang tidak dipinjam');</script>
+  <?php endif; ?>
 <body>
   <!-- sidebar -->
   <?php include("asset/sidebar.php"); ?>
@@ -37,7 +42,7 @@ $nbarang = $query->fetch_object();
                   <li class="breadcrumb-item"><a href="#"><i class="fa fa-home"></i></a></li>
                   <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
                   <?php if (isset($id)): ?>
-                    <li class="breadcrumb-item active" aria-current="page">Ubah status </li>
+                    <li class="breadcrumb-item active" aria-current="page">Koreksi Data </li>
                   <?php else: ?>
                     <li class="breadcrumb-item active" aria-current="page">ERR NO ID</li>
                   <?php endif; ?>
@@ -61,7 +66,7 @@ $nbarang = $query->fetch_object();
               <div class="row align-items-center">
                 <div class="col-8">
                   <?php if (isset($id)): ?>
-                    <h3 class="mb-0">Ubah Status <?= $nbarang->nama_barang?> Unit <?= $barang_unit->serial_number?></h3>
+                    <h3 class="mb-0">Koreksi Data <?= $nbarang->nama_barang?> Unit <?= $barang_unit->serial_number?></h3>
                   <?php else: ?>
                     <h3 class="mb-0">ERR NO ID</h3>
                   <?php endif; ?>
@@ -143,7 +148,7 @@ $nbarang = $query->fetch_object();
                   </div>
                   <input type="hidden" name="id_unit" value="<?= $barang_unit->id_unit; ?>">
                   <div class="text-center">
-                    <button class="btn btn-primary my-4">UBAH</button>
+                    <button class="btn btn-primary my-4">Koreksi Data</button>
                   </div>
                 </form>
               </div>
@@ -161,5 +166,25 @@ $nbarang = $query->fetch_object();
 
   <?php include("asset/js.php"); ?>
 </body>
+<script>
+document.getElementById('status').addEventListener('change', function() {
+    var status = this.value;
+    var gudang = document.getElementById('gudang');
+    var empid = document.getElementById('empid');
 
+    if (status == "0" || status == "3") {
+        // Gudang is required if status is 0 (Tersedia) or 3 (Rusak Total/Hilang)
+        gudang.required = true;
+    } else {
+        gudang.required = false;
+    }
+
+    if (status == "1") {
+        // Employee is required if status is 1 (Dipinjam/Digunakan)
+        empid.required = true;
+    } else {
+        empid.required = false;
+    }
+});
+</script>
 </html>
