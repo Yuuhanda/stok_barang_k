@@ -126,6 +126,26 @@ WHERE barang_unit.status= '2'");
   </div>
 </div>
 <?php include("asset/js.php"); ?>
+<!-- Include DataTables JS -->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script>
+  $(document).ready(function () {
+    if ($.fn.DataTable.isDataTable('#file')) {
+        // Destroy the existing instance before reinitializing
+        $('#file').DataTable().destroy();
+    }
+    // Initialize DataTables
+    var table = $('#file').DataTable({
+      "pageLength": 10 // Default value
+    });
+
+    // Change page length dynamically
+    $('#rowsPerPage').on('change', function () {
+      var length = $(this).val();
+      table.page.len(length).draw();
+    });
+  });
+</script>
 </body>
 
 </html>

@@ -1,5 +1,6 @@
 
 <?php @$id = $_GET['id']; ?>
+<?php @$error = $_GET['error']; ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +8,13 @@
   <title>Add Unit</title>
   <?php include("asset/css.php"); ?>
 </head>
-
+<?php if ($error==1): ?>
+        <script>alert('file tidak dapat dibaca');</script>
+    <?php elseif($error==2): ?>
+        <script>alert('file gagal diunggah');</script>
+        <?php elseif($error==3): ?>
+          <script>alert('jenis file salah. harus .csv');</script>
+<?php endif; ?>
 <body>
   <!-- sidebar -->
   <?php include("asset/sidebar.php"); ?>
@@ -40,7 +47,8 @@
               </nav>
             </div>
             <div class="col-lg-6 col-5 text-right">
-              <a href="dashboard.php" class="btn btn-sm btn-neutral">Kembali</a>
+              <a href="asset/mass-add-unit.csv" download class="btn btn-sm btn-neutral">Template Tambah Unit Massal</a>
+              
               <!-- <a href="#" class="btn btn-sm btn-neutral">Filters</a> -->
             </div>
           </div>
@@ -51,6 +59,7 @@
     <div class="container-fluid mt--6">
       <div class="row">
         <div class="col-xl-12 order-xl-1">
+          <div class="card">
             <div class="card-header">
               <div class="row align-items-center">
                 <div class="col-8">
@@ -59,18 +68,6 @@
                   <?php else: ?>
                     <h3 class="mb-0">ERR NO ID</h3>
                   <?php endif; ?>
-                </div>
-              </div>
-            </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xl-12 order-xl-1">
-          <div class="card">
-            <div class="card-header">
-              <div class="row align-items-center">
-                <div class="col-8">
-                  <button class="btn btn-primary my-4">Tambah Unit</button>
                 </div>
               </div>
             </div>
@@ -109,6 +106,55 @@
                   <input type="hidden" name="idbarang" value="<?= $barang->id_barang; ?>">
                   <div class="text-center">
                     <button class="btn btn-primary my-4">Tambah Unit</button>
+                  </div>
+                </form>
+              </div>
+            <?php else: ?>
+              <div class="card-body">
+                ERR NO ID
+              </div>
+            <?php endif; ?>
+          </div>
+        </div>
+      </div>
+      <?php include("asset/footer.php"); ?>
+    </div>
+
+
+<!-- Mass Upload -->
+<div class="container-fluid mt--6">
+      <div class="row">
+        <div class="col-xl-12 order-xl-1">
+          <div class="card">
+            <div class="card-header">
+              <div class="row align-items-center">
+                <div class="col-8">
+                  <?php if (isset($id)): ?>
+                    <h3 class="mb-0">Upload Massal Barang</h3>
+                  <?php else: ?>
+                    <h3 class="mb-0">ERR NO ID</h3>
+                  <?php endif; ?>
+                </div>
+              </div>
+            </div>
+            <?php if (isset($id)): ?>
+              
+              <div class="card-body">
+                <form action="../backend/mass-upload.php" method="post" enctype="multipart/form-data">
+                  <h6 class="heading-small text-muted mb-4">Unggah Data Unit Baru</h6>
+                  <div class="pl-lg-4">
+                    <div class="row">
+                      <div class="col-lg-6">
+                      <input type="file" name="fileToUpload" id="fileToUpload" class="btn btn-sm btn-neutral">
+                      </div>  
+                      <div class="col-lg-6">
+                        
+                      </div>  
+                    </div>
+                  </div>
+                  <input type="hidden" name="idbarang" value="<?= $barang->id_barang; ?>">
+                  <div class="text-center">
+                    <button class="btn btn-primary my-4">Tambah Unit Massal</button>
                   </div>
                 </form>
               </div>
