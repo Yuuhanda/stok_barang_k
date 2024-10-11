@@ -69,26 +69,27 @@
                   <?php
                   $query = $mysqli->query("SELECT * FROM barang");
                   while ($barang = $query->fetch_object()) { 
-                    $barang_id = $barang->id_barang;
-                    $q_aval = $mysqli->query("SELECT COUNT(CASE WHEN TRIM(barang_unit.status) = 0 AND TRIM(barang_unit.id_barang) = '$barang_id' THEN 1 END) AS available FROM barang_unit WHERE barang_unit.id_barang = '$barang_id';");
-                    $aval_d = $q_aval->fetch_object();
-                    $q_use = $mysqli->query("SELECT COUNT(CASE WHEN TRIM(barang_unit.status) = 1 AND TRIM(barang_unit.id_barang) = '$barang_id' THEN 1 END) AS in_use FROM barang_unit WHERE barang_unit.id_barang = '$barang_id';");
-                    $use_d = $q_use->fetch_object();
-                    $q_repair = $mysqli->query("SELECT COUNT(CASE WHEN TRIM(barang_unit.status) = 2 AND TRIM(barang_unit.id_barang) = '$barang_id' THEN 1 END) AS in_repair FROM barang_unit WHERE barang_unit.id_barang = '$barang_id';");
-                    $repair_d = $q_repair->fetch_object();
-                    $q_loss = $mysqli->query("SELECT COUNT(CASE WHEN TRIM(barang_unit.status) = 3 AND TRIM(barang_unit.id_barang) = '$barang_id' THEN 1 END) AS lost FROM barang_unit WHERE barang_unit.id_barang = '$barang_id';");
-                    $lost_d = $q_loss->fetch_object();
-                    ?>
+                    $barang_id = $barang->id_barang; 
+                    $counterQuery = $mysqli->query("SELECT 
+                            COUNT(CASE WHEN TRIM(barang_unit.status) = '0' THEN 1 END) AS available,
+                            COUNT(CASE WHEN TRIM(barang_unit.status) = '1' THEN 1 END) AS in_use,
+                            COUNT(CASE WHEN TRIM(barang_unit.status) = '2' THEN 1 END) AS in_repair,
+                            COUNT(CASE WHEN TRIM(barang_unit.status) = '3' THEN 1 END) AS lost
+                        FROM barang_unit
+                        WHERE barang_unit.id_barang = '$barang_id';
+                    ");
+                    $counterData = $counterQuery->fetch_object();?>
                     <tr>
                       <td><?= $barang->nama_barang;  ?></td>
                       <td><?= $barang->sku;  ?></td>
-                      <td><?= $aval_d->available;?></td>
-                      <td><?= $use_d->in_use;?></td>
-                      <td><?= $repair_d->in_repair;?></td>
-                      <td><?= $lost_d->lost;?></td>
+                      <td><?= $counterData->available;?></td>
+                      <td><?= $counterData->in_use;?></td>
+                      <td><?= $counterData->in_repair;?></td>
+                      <td><?= $counterData->lost;?></td>
                       <td>
-                        <!-- <a href="add-item.php" class="btn btn-sm btn-danger">Hapus</a> -->
+                        <!-- <a href="" class="btn btn-sm btn-danger">Hapus</a> -->
                         <a href="item-detail.php?id=<?= $barang->id_barang; ?>" class="btn btn-sm btn-info">Lihat Detail</a>
+                        <!-- <a href="item-wh-dist.php?id=<?= $barang->id_barang; ?>" class="btn btn-sm btn-info">Lihat Lokasi Barang</a> -->
                       </td>
                     </td>
                   </tr>
@@ -106,5 +107,24 @@
 </div>
 <?php include("asset/js.php"); ?>
 </body>
+<!-- Include DataTables JS -->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script>
+  $(document).ready(function () {
+    if ($.fn.DataTable.isDataTable('#file')) {
+        // Destroy the existing instance before reinitializing
+        $('#file').DataTable().destroy();
+    }
+    // Initialize DataTables
+    var table = $('#file').DataTable({
+      "pageLength": 10 // Default value
+    });
 
+    // Change page length dynamically
+    $('#rowsPerPage').on('change', function () {
+      var length = $(this).val();
+      table.page.len(length).draw();
+    });
+  });
+</script>
 </html>

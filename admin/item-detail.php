@@ -1,6 +1,6 @@
-<?php
-     ?>
+
 <?php @$id = $_GET['id']; ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -71,87 +71,82 @@ $nbarang = $query->fetch_object();?>
                     <td width="5%"><strong>Kondisi</strong></td>
                   </tr>
                 </thead>
-               <tbody>
+                <tbody>
                   <?php
-                  $query = $mysqli->query("SELECT barang_unit.kondisi AS kondisi, barang_unit.serial_number AS serial_number ,barang_unit.id_unit AS id_unit, barang_unit.status AS status, user.nama_user AS nama_user, gudang.Nama_gudang AS nama_gudang, employee.emp_name AS emp_name, barang_unit.comment AS comment
-                          FROM barang_unit 
-                          LEFT JOIN barang 
-                            ON barang.id_barang = barang_unit.id_barang
-                          LEFT JOIN gudang
-                            ON barang_unit.id_gudang = gudang.id_gudang
-                          LEFT JOIN employee
-                            ON barang_unit.id_employee = employee.id_employee
-                          LEFT JOIN user
-                            ON user.id_user = barang_unit.id_user
-                          WHERE barang_unit.id_barang = $id");
-                  while ($barang = $query->fetch_object()) { ?>
-                    <tr>
-                    <?php $stats_b = $barang->status;
-                    $kondisi = $barang->kondisi;?>
-                        <td width="5%"><?= $barang->serial_number; ?></td>
-                        <?php if ($stats_b == 0): ?>
-                            <td width="5%">Tersedia/Disimpan</td>
-                        <?php elseif ($stats_b == 1): ?>
-                            <td width="5%">Dipinjam/Digunakan</td>
-                        <?php elseif ($stats_b == 2): ?>
-                            <td width="5%">Dalam Perbaikan</td>
-                        <?php elseif ($stats_b == 3): ?>
-                            <td width="5%">Rusak Total/Hilang</td>
-                        <?php else: ?>
-                            <td width="5%">Unknown status</td>
-                        <?php endif; ?>                                        
-                        <?php                        
-                        if ($stats_b == 0): ?>
-                            <td width="5%"><?= $barang->nama_gudang; ?></td>
-                        <?php elseif ($stats_b == 1): ?>
-                            <td width="5%"><?= $barang->emp_name; ?></td>
-                        <?php elseif ($stats_b == 2): ?>
-                            <td width="5%">Tidak Tersedia</td>
-                        <?php elseif ($stats_b == 3): ?>
-                            <td width="5%"><?= $barang->nama_gudang; ?></td>
-                        <?php else: ?>
-                            <td width="5%">Status tidak diketahui</td>
-                        <?php endif; ?>
-                        <?php if( $barang->nama_user==NULL){?>
-                          <td>DELETED USER</td>
-                          <?php } else {?>
-                        <td><?= $barang->nama_user; ?></td>
-                        <?php } ?>
-                        <td><?= $barang->comment; ?></td>
-                        <?php if ($kondisi == 0): ?>
-                            <td width="5%">Tidak ada kerusakan</td>
-                        <?php elseif ($kondisi == 1): ?>
-                            <td width="5%">Kerusakan Ringan</td>
-                        <?php elseif ($kondisi == 2): ?>
-                            <td width="5%">kerusakan Sedang. Komponen Hilang</td>
-                        <?php elseif ($kondisi == 3): ?>
-                            <td width="5%">Kerusakan Berat. Tidak bisa digunakan</td>
-                        <?php elseif ($kondisi == 4): ?>
-                            <td width="5%">Rusak Total/Hilang</td>
-                        <?php else: ?>
-                            <td width="5%">Unknown status</td>
-                        <?php endif; ?>                            
-                    </td>
-                  </tr>
-                  <?php
-                } ?>
-              </tbody>
+                 
+                  $query = $mysqli->query("SELECT barang_unit.kondisi AS kondisi, barang_unit.serial_number AS serial_number, barang_unit.id_unit AS id_unit, barang_unit.status AS status,
+                             user.nama_user AS nama_user, gudang.Nama_gudang AS nama_gudang, employee.emp_name AS emp_name, barang_unit.comment AS comment
+                      FROM barang_unit
+                      LEFT JOIN barang ON barang.id_barang = barang_unit.id_barang
+                      LEFT JOIN gudang ON barang_unit.id_gudang = gudang.id_gudang
+                      LEFT JOIN employee ON barang_unit.id_employee = employee.id_employee
+                      LEFT JOIN user ON user.id_user = barang_unit.id_user
+                      WHERE barang_unit.id_barang = $id
+                      
+                  ");
+                
+                  while ($barang = $query->fetch_object()) {
+                      $status_text = '';
+                      $location = '';
+                  
+                      switch ($barang->status) {
+                          case 0:
+                              $status_text = "Tersedia/Disimpan";
+                              $location = $barang->nama_gudang;
+                              break;
+                          case 1:
+                              $status_text = "Dipinjam/Digunakan";
+                              $location = $barang->emp_name;
+                              break;
+                          case 2:
+                              $status_text = "Dalam Perbaikan";
+                              $location = "Tidak Tersedia";
+                              break;
+                          case 3:
+                              $status_text = "Rusak Total/Hilang";
+                              $location = $barang->nama_gudang;
+                              break;
+                          default:
+                              $status_text = "Unknown status";
+                              $location = "Status tidak diketahui";
+                              break;
+                      }
+                    
+                      switch ($barang->kondisi) {
+                          case 0:
+                              $kondisi_text = "Tidak ada kerusakan";
+                              break;
+                          case 1:
+                              $kondisi_text = "Kerusakan Ringan";
+                              break;
+                          case 2:
+                              $kondisi_text = "Kerusakan Sedang. Komponen Hilang";
+                              break;
+                          case 3:
+                              $kondisi_text = "Kerusakan Berat. Tidak bisa digunakan";
+                              break;
+                          case 4:
+                              $kondisi_text = "Rusak Total/Hilang";
+                              break;
+                          default:
+                              $kondisi_text = "Unknown status";
+                              break;
+                      }
+                      ?>
+                      <tr>
+                          <td width="5%"><?= $barang->serial_number; ?></td>
+                          <td width="5%"><?= $status_text; ?></td>
+                          <td width="5%"><?= $location; ?></td>
+                          <td width="5%"><?= $barang->nama_user ?? 'DELETED USER'; ?></td>
+                          <td><?= $barang->comment; ?></td>
+                          <td width="5%"><?= $kondisi_text; ?></td>
+                      </tr>
+                  <?php } ?>
+                </tbody>
+
             </table>
             <!-- end table -->
-            <div class="col-lg-6 col-5 text-left">
-            <!-- Rows per page dropdown 
-            <div class="form-group">
-                    <label for="rowsPerPage" style="font-size: 12px;">Rows per page:</label>
-                    <select id="rowsPerPage" class="form-control" style="width: 50px; font-size: 12px; padding: 2px;">
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                        <option value="200">200</option>
-                        <option value="500">500</option>
-                    </select>
-                </div>-->
-            </div>
+            
           </div>
         </div>
       </div>

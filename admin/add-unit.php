@@ -130,7 +130,7 @@
               <div class="row align-items-center">
                 <div class="col-8">
                   <?php if (isset($id)): ?>
-                    <h3 class="mb-0">Upload Massal Barang</h3>
+                    <h3 class="mb-0">Unggah Massal Unit Baru</h3>
                   <?php else: ?>
                     <h3 class="mb-0">ERR NO ID</h3>
                   <?php endif; ?>
@@ -147,9 +147,7 @@
                       <div class="col-lg-6">
                       <input type="file" name="fileToUpload" id="fileToUpload" class="btn btn-sm btn-neutral">
                       </div>  
-                      <div class="col-lg-6">
-                        
-                      </div>  
+
                     </div>
                   </div>
                   <input type="hidden" name="idbarang" value="<?= $barang->id_barang; ?>">

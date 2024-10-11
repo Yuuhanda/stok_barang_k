@@ -89,6 +89,7 @@
                            Hapus
                         </a>
                         <a href="update-wh.php?id=<?= $gudang_data->id_gudang; ?>" class="btn btn-sm btn-info">Ubah</a>
+                        <a href="warehouse-inventory.php?id=<?= $gudang_data->id_gudang; ?>" class="btn btn-sm btn-info">Lihat Gudang</a>
                       </td>
                     </tr>
                   <?php
