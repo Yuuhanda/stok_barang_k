@@ -89,7 +89,7 @@
                       <td>
                         <!-- <a href="" class="btn btn-sm btn-danger">Hapus</a> -->
                         <a href="item-detail.php?id=<?= $barang->id_barang; ?>" class="btn btn-sm btn-info">Lihat Detail</a>
-                        <!-- <a href="item-wh-dist.php?id=<?= $barang->id_barang; ?>" class="btn btn-sm btn-info">Lihat Lokasi Barang</a> -->
+                         <a href="item-wh-dist.php?id=<?= $barang->id_barang; ?>" class="btn btn-sm btn-info">Lihat Lokasi Barang Di Gudang</a>
                       </td>
                     </td>
                   </tr>

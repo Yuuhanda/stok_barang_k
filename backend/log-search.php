@@ -5,26 +5,21 @@ $serial_number = $_POST['serialn'];
 
 
 //id barang
-$qunit = $mysqli->query("SELECT * FROM barang_unit WHERE serial_number = '$serial_number'");
+$qunit = $mysqli->query("SELECT id_unit FROM barang_unit WHERE serial_number = '$serial_number'");
 $barang = $qunit->fetch_object();
+$id = $barang->id_unit;
 $id_barang = $barang->id_barang;
 
-
-// id admin for last updated by
-$id_admin = $_SESSION['id_user'];
-
 // Check if the provided id_unit exists
-$unit_check = $mysqli->query("SELECT * FROM barang_unit WHERE serial_number='$serial_number'");
-$unit_data = $unit_check->fetch_object();
-$id_unit = $unit_data->id_unit;
-if ($unit_check->num_rows == 0) {
+if ($qunit->num_rows == 0) {
     echo "Nomor Seri tidak valid, $serial_number tidak ada. Cek penulisan!";
     header('Location: ../admin/log-search.php?alert=1');
     exit();
 } 
 
-if ($unit_check->num_rows != 0) {
-    header('Location: ../admin/log-unit.php?id='.$id_unit);
+
+if ($qunit->num_rows != 0) {
+    header('Location: ../admin/log-unit.php?id='.$id);
     exit();
 } 
 else {

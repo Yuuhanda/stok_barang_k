@@ -54,44 +54,34 @@
             <div class="table-responsive">
               <!-- Projects table -->
               <table id="file" class="table striped">
-                <thead>
-                  <tr>
-                    <td width="20%"><strong>Nama Gudang</strong></td>
-                    <td width="5%"><strong>Unit Tersedia</strong></td>
-                    <td width="5%%"><strong>Unit Digunakan</strong></td>
-                    <td width="5%"><strong>Unit Diperbaiki</strong></td>
-                    <td width="5%"><strong>Unit Rusak Total/Hilang</strong></td>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                  $query = $mysqli->query("SELECT * FROM barang");
-                  $whquery = $mysqli->query("SELECT * FROM gudang");
-                  $whdata = $whquery->fetch_object();
-                  while ($barang = $query->fetch_object()) { 
-                    $barang_id = $barang->id_barang;
-                    $id_gudang = $barang->id_gudang; 
-                    $counterQuery = $mysqli->query("SELECT 
-                            COUNT(CASE WHEN TRIM(barang_unit.status) = '0' THEN 1 END) AS available,
-                            COUNT(CASE WHEN TRIM(barang_unit.status) = '1' THEN 1 END) AS in_use,
-                            COUNT(CASE WHEN TRIM(barang_unit.status) = '2' THEN 1 END) AS in_repair,
-                            COUNT(CASE WHEN TRIM(barang_unit.status) = '3' THEN 1 END) AS lost
-                        FROM barang_unit
-                        WHERE barang_unit.id_barang = '$barang_id' AND barang_unit.id_gudang = '$id_gudang'");
-                    $counterData = $counterQuery->fetch_object();?>
-                    <tr>
-                      <td><?= $barang->nama_barang;  ?></td>
-                      <td><?= $barang->sku;  ?></td>
-                      <td><?= $counterData->available;?></td>
-                      <td><?= $counterData->in_use;?></td>
-                      <td><?= $counterData->in_repair;?></td>
-                      <td><?= $counterData->lost;?></td>
-                    </td>
-                  </tr>
-                  <?php
-                } ?>
-              </tbody>
-            </table>
+    <thead>
+        <tr>
+            <td width="20%"><strong>Nama Gudang</strong></td>
+            <td width="5%"><strong>Unit Tersedia</strong></td>
+            <td width="5%"><strong>Unit Rusak Total/Hilang</strong></td>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        $whquery = $mysqli->query("SELECT * FROM gudang");  // Fetch all warehouses
+        while ($whdata = $whquery->fetch_object()) {
+            // For each warehouse, fetch the item count and group by status
+            $counterQuery = $mysqli->query("SELECT 
+                    COUNT(CASE WHEN TRIM(barang_unit.status) = '0' AND id_barang = $id THEN 1 END) AS available,
+                    COUNT(CASE WHEN TRIM(barang_unit.status) = '3' AND id_barang = $id THEN 1 END) AS lost
+                FROM barang_unit
+                WHERE barang_unit.id_gudang = '$whdata->id_gudang'
+            ");
+            $counterData = $counterQuery->fetch_object(); ?>
+            <tr>
+                <td><?= $whdata->Nama_gudang; ?></td> <!-- Display warehouse name -->
+                <td><?= $counterData->available; ?></td> <!-- Units available -->
+                <td><?= $counterData->lost; ?></td> <!-- Units lost/damaged -->
+            </tr>
+        <?php } ?>
+    </tbody>
+</table>
+
             <!-- end table -->
           </div>
         </div>

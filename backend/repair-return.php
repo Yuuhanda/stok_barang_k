@@ -23,6 +23,22 @@ if ($unit_check->num_rows == 0) {
     exit();
 }
 
+//gettiing nama_barang and nama_gudang
+$query = $mysqli->query("SELECT b.nama_barang, g.Nama_gudang 
+    FROM barang_unit bu
+    JOIN barang b ON bu.id_barang = b.id_barang
+    JOIN gudang g ON bu.id_gudang = g.id_gudang
+    WHERE bu.id_unit = '$id_unit' 
+    LIMIT 1
+");
+$data = $query->fetch_object();
+$nama_barang = $data->nama_barang;
+$nGudang = $data->Nama_gudang;
+
+// Log content
+$log_content = $nama_barang . " Unit ". $barang->serial_number . " selesai diperbaiki dan dikembalikan ke gudang" . $nGudang ;
+
+
 if ($kondisi == 4) {
     $mysqli->query("UPDATE barang_unit SET status = '4', id_employee = NULL ,id_gudang='$id_gudang',id_user ='$id_admin', comment ='$comment_content', kondisi='$kondisi' WHERE id_unit = '$id_unit'");
     header('Location: ../admin/repair-list.php');   

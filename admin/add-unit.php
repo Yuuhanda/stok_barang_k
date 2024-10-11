@@ -11,7 +11,7 @@
 <?php if ($error==1): ?>
         <script>alert('file tidak dapat dibaca');</script>
     <?php elseif($error==2): ?>
-        <script>alert('file gagal diunggah');</script>
+        <script>alert('file gagal diunggah atau tidak ada file diunggah');</script>
         <?php elseif($error==3): ?>
           <script>alert('jenis file salah. harus .csv');</script>
 <?php endif; ?>
