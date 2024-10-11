@@ -1,5 +1,4 @@
-
-
+<?php @$error = $_GET['error']; ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +6,19 @@
   <title>Inventory</title>
   <?php include("asset/css.php"); ?>
 </head>
-
+<?php if ($error==1): ?>
+  <script>alert('file tidak dapat dibaca');</script>
+<?php elseif($error==2): ?>
+  <script>alert('file gagal diunggah atau tidak ada file diunggah');</script>
+<?php elseif($error==3): ?>
+  <script>alert('jenis file salah. harus .csv');</script>
+<?php elseif($error==4): ?>
+    <script>alert('ada nama_barang kosong, cek kembali dokumen');</script>
+<?php elseif($error==5): ?>
+  <script>alert('ada sku kosong, cek kembali dokumen');</script>
+<?php elseif($error==6): ?>
+  <script>alert('sku tidak unik. sku sudah digunakan untuk barang lain');</script>
+<?php endif; ?>
 <body>
   <!-- sidebar -->
   <?php include("asset/sidebar.php"); ?>
@@ -39,7 +50,7 @@
             </div>
             <div class="col-lg-6 col-5 text-right">
               <a href="dashboard.php" class="btn btn-sm btn-neutral">Kembali</a>
-              <!-- <a href="#" class="btn btn-sm btn-neutral">Filters</a> -->
+              <a href="asset/mass-add-item.csv" download class="btn btn-sm btn-neutral">Download Template Tambah Unit Massal</a>
             </div>
           </div>
         </div>
@@ -119,6 +130,39 @@
                 </form>
               </div>
             <?php endif; ?>
+          </div>
+        </div>
+      </div>
+      <?php include("asset/footer.php"); ?>
+    </div>
+
+<!-- Mass Upload -->
+<div class="container-fluid mt--6">
+      <div class="row">
+        <div class="col-xl-12 order-xl-1">
+          <div class="card">
+            <div class="card-header">
+              <div class="row align-items-center">
+                <div class="col-8">
+                    <h3 class="mb-0">Unggah Massal Barang Baru</h3>
+                </div>
+              </div>
+            </div> 
+              <div class="card-body">
+                <form action="../backend/mass-add-item.php" method="post" enctype="multipart/form-data">
+                  <h6 class="heading-small text-muted mb-4">SKU akan dibuat otomatis jika kolom sku kosong</h6>
+                  <div class="pl-lg-4">
+                    <div class="row">
+                      <div class="col-lg-6">
+                      <input type="file" name="fileToUpload" id="fileToUpload" class="btn btn-sm btn-neutral">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    <button class="btn btn-primary my-4">Tambah Barang Massal</button>
+                  </div>
+                </form>
+              </div>
           </div>
         </div>
       </div>

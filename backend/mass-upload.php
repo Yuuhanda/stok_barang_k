@@ -3,12 +3,12 @@
 include '../database/config.php';
 
 // Check if a file is uploaded
-if (isset($_FILES['fileToUpload'])) {
+if (isset($_FILES['fileToUpload']) && $_FILES['fileToUpload']['error'] == UPLOAD_ERR_OK) {
     // Check if the uploaded file is a CSV
     $fileType = mime_content_type($_FILES['fileToUpload']['tmp_name']);
     if ($fileType != 'text/csv') {
         // Not a CSV file, redirect with error
-        header("Location: ../admin/item-detail.php?id=" . $_POST['idbarang'] . "&error=3");
+        header("Location: ../admin/add-unit.php?error=3");
         exit();
     }
 
@@ -84,12 +84,12 @@ if (isset($_FILES['fileToUpload'])) {
         exit();
     } else {
         // Failed to open file
-        header("Location: .../admin/item-detail.php?id=" . $_POST['idbarang'] . "&error=2");
+        header("Location: .../admin/add-unit.php?error=1");
         exit();
     }
 } else {
     // No file uploaded, redirect back
-    header("Location: ../admin/item-detail.php?id=" . $_POST['idbarang'] . "&error=3");
+    header("Location: ../admin/add-unit.php?error=2");
     exit();
 }
 

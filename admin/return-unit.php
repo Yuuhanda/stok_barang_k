@@ -13,11 +13,14 @@
 <body>
 <?php if ($error==1): ?>
         <script>alert('file tidak dapat dibaca');</script>
-    <?php elseif($error==2): ?>
-        <script>alert('file gagal diunggah');</script>
-        <?php elseif($error==3): ?>
-          <script>alert('upload gagal');</script>
+<?php elseif($error==2): ?>
+  <script>alert('file gagal diunggah');</script>
+<?php elseif($error==3): ?>
+  <script>alert('Tidak ada file di unggah');</script>
+<?php elseif($error==4): ?>
+  <script>alert('Buka file CSV');</script>
 <?php endif; ?>
+
     <?php if ($alert==1): ?>
         <script>alert('Nomor Seri Unit Tidak Ada, cek penulisan');</script>
     <?php elseif($alert==2): ?>
@@ -48,13 +51,13 @@
                 <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                   <li class="breadcrumb-item"><a href="#"><i class="fa fa-home"></i></a></li>
                   <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Pinjam Barang </li>
+                    <li class="breadcrumb-item active" aria-current="page">Pengembalian Barang </li>
 
                 </ol>
               </nav>
             </div>
             <div class="col-lg-6 col-5 text-right">
-              <a href="asset/mass-return-template.csv" download class="btn btn-sm btn-neutral">Template Tambah Unit Massal</a>
+              <a href="asset/mass-return-template.csv" download class="btn btn-sm btn-neutral">Template Pengembalian Unit Massal</a>
               <!-- <a href="#" class="btn btn-sm btn-neutral">Filters</a> -->
             </div>
           </div>
@@ -129,7 +132,7 @@
                       </div>
                   </div>
                   <div class="text-center">
-                    <button class="btn btn-primary my-4">UBAH</button>
+                    <button class="btn btn-primary my-4">Kembalikan Barang Ke Gudang</button>
                   </div>
                   
                 </form>

@@ -3,12 +3,12 @@
 include '../database/config.php';
 
 // Check if a file is uploaded
-if (isset($_FILES['fileToUpload'])) {
+if (isset($_FILES['fileToUpload']) && $_FILES['fileToUpload']['error'] == UPLOAD_ERR_OK) {
     // Check if the uploaded file is a CSV
     $fileType = mime_content_type($_FILES['fileToUpload']['tmp_name']);
     if ($fileType != 'text/csv') {
         // Not a CSV file, redirect with error
-        header("Location: ../admin/return-unit.php");
+        header("Location: ../admin/return-unit.php?error=4");
         exit();
     }
 
@@ -32,7 +32,7 @@ if (isset($_FILES['fileToUpload'])) {
             $id_gudang = trim($data[2]);
             $komentar = trim($data[3]);
 
-            // Redirect if 'gudang' is empty
+            // Redirect if 'nomor_seri' is empty
             if (empty($nomor_seri)) {
                 fclose($handle);
                 header("Location: ../admin/return-unit.php?alert=1");
@@ -75,6 +75,25 @@ if (isset($_FILES['fileToUpload'])) {
                 header("Location: ../admin/return-unit.php?alert=1");
                 exit();
             }
+            //sn and id_unit
+            $sn = $unit['serial_number'];
+            $unit_query = $mysqli->query("SELECT id_unit FROM barang_unit WHERE serial_number = '$sn'");
+            $id_f_unit = $unit_query->fetch_object();
+            //query for log content
+            $logquery = $mysqli->query("SELECT b.nama_barang, g.Nama_gudang 
+                FROM barang_unit bu
+                JOIN barang b ON bu.id_barang = b.id_barang
+                JOIN gudang g ON bu.id_gudang = g.id_gudang
+                WHERE bu.serial_number = '$sn' 
+                LIMIT 1
+            ");
+            $data = $logquery->fetch_object();
+            $nama_barang = $data->nama_barang;
+            $nGudang = $data->Nama_gudang;
+            $id_unit = $id_f_unit->id_unit;
+
+            // Log content
+            $log_content = $nama_barang . " Unit ". $unit['serial_number'] . " dikembalikan ke gudang" . $nGudang ;
 
             // Proceed with the insertion since id_gudang and serial_number is valid
             $query = "UPDATE `barang_unit` 
@@ -92,8 +111,17 @@ if (isset($_FILES['fileToUpload'])) {
                 ':komentar' => $unit['komentar'],
                 ':id_user' => $_SESSION['id_user'],
                 ':kondisi' => $unit['kondisi'],
-                ':status' => '0',
-  ]);
+                ':status' => '0',]);
+            
+            // Query for log
+            $loginsert = "INSERT INTO `unit_log`(`id_unit`, `content`) VALUES (:id_unit, :content)";
+            $stmt = $pdo->prepare($loginsert);
+            $stmt->execute([
+                ':id_unit' => $id_unit,
+                ':content' => $log_content,
+            ]);
+
+            
   
         }
         
