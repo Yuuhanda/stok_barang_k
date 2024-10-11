@@ -1,9 +1,9 @@
-<?php ?>
+<?php @$id = $_GET['id']; ?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Kelola Unit</title>
+  <title>Isi Gudang</title>
   <?php include("asset/css.php"); ?>
 </head>
 
@@ -17,7 +17,10 @@
     <!-- navbar -->
     <?php include("asset/navbar.php"); ?>
     <!-- navbar end -->
-
+<!-- Getting warehouse name -->
+ <?php $whquery = $mysqli->query("SELECT Nama_gudang FROM gudang WHERE id_gudang = '$id';");
+ $whdata = $whquery->fetch_object();
+ $whname = $whdata->Nama_gudang;?>
     <!-- Header -->
     <div class="header bg-primary pb-6">
       <div class="container-fluid">
@@ -28,7 +31,7 @@
                 <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                   <li class="breadcrumb-item"><a href="#"><i class="fa fa-home"></i></a></li>
                   <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Kelola Unit</li>
+                  <li class="breadcrumb-item active" aria-current="page">Isi Gudang <?=$whname?></li>
                 </ol>
               </nav>
             </div>
@@ -66,7 +69,7 @@
                 <tbody>
                   <?php
                   $query = $mysqli->query("SELECT * FROM barang");
-                  while ($barang = $query->fetch_object()) { 
+                  while ($barang = $query->fetch_object()) {
                     $barang_id = $barang->id_barang; 
                     $counterQuery = $mysqli->query("SELECT 
                             COUNT(CASE WHEN TRIM(barang_unit.status) = '0' THEN 1 END) AS available,
@@ -74,7 +77,8 @@
                             COUNT(CASE WHEN TRIM(barang_unit.status) = '2' THEN 1 END) AS in_repair,
                             COUNT(CASE WHEN TRIM(barang_unit.status) = '3' THEN 1 END) AS lost
                         FROM barang_unit
-                        WHERE barang_unit.id_barang = '$barang_id';
+                        WHERE barang_unit.id_barang = '$barang_id' 
+                        AND barang_unit.id_gudang = '$id';
                     ");
                     $counterData = $counterQuery->fetch_object();?>
                     <tr>
@@ -86,7 +90,7 @@
                       <td><?= $counterData->lost;?></td>
                       <td>
                         <!-- <a href="add-item.php" class="btn btn-sm btn-danger">Hapus</a> -->
-                        <a href="add-unit.php?id=<?= $barang->id_barang; ?>" class="btn btn-sm btn-info">Tambah Unit</a>
+                        <a href="warehouse-in-storage.php?id=<?= $barang->id_barang; ?>&gudang=<?=$id?>" class="btn btn-sm btn-info">Lihat Detail</a>
                       </td>
                     </td>
                   </tr>
@@ -103,6 +107,7 @@
   </div>
 </div>
 <?php include("asset/js.php"); ?>
+</body>
 <!-- Include DataTables JS -->
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script>
@@ -123,6 +128,4 @@
     });
   });
 </script>
-</body>
-
 </html>

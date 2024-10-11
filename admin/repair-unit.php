@@ -1,6 +1,7 @@
 <?php  ?>
 <?php @$id = $_GET['id']; ?>
 <?php @$alert = $_GET['alert'];?>
+
 <!DOCTYPE html>
 <html>
 <head>

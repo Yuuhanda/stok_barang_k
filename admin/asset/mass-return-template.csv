@@ -1,0 +1,7 @@
+nomor_seri,kondisi,id_gudang,komentar
+isi nomor seri unit barang,isi antara 0 sampai 4,,isi komentar 
+,0 tidak ada kerusakan,,misal barang kembali
+,1 kerusakan ringan,,bisa copy & paste ke semua
+,"2 kerusakan sedang, komponen hilang masih fungsional",,
+,3 kerusakan berat. Butuh perbaikan,,
+,4 rusak total,,

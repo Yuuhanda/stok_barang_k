@@ -1,9 +1,9 @@
-<?php ?>
+<?php @$id = $_GET['id']; ?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Kelola Unit</title>
+  <title>Master Item</title>
   <?php include("asset/css.php"); ?>
 </head>
 
@@ -28,11 +28,13 @@
                 <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                   <li class="breadcrumb-item"><a href="#"><i class="fa fa-home"></i></a></li>
                   <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Kelola Unit</li>
+                  <li class="breadcrumb-item active" aria-current="page">Master Inventory</li>
                 </ol>
               </nav>
             </div>
-            
+            <div class="col-lg-6 col-5 text-right">
+              <a href="add-item.php" class="btn btn-sm btn-neutral">Tambah Barang</a>
+            </div>
           </div>
         </div>
       </div>
@@ -54,28 +56,28 @@
               <table id="file" class="table striped">
                 <thead>
                   <tr>
-                    <td width="20%"><strong>Nama Barang</strong></td>
-                    <td width="20%"><strong>SKU</strong></td>
+                    <td width="20%"><strong>Nama Gudang</strong></td>
                     <td width="5%"><strong>Unit Tersedia</strong></td>
                     <td width="5%%"><strong>Unit Digunakan</strong></td>
                     <td width="5%"><strong>Unit Diperbaiki</strong></td>
                     <td width="5%"><strong>Unit Rusak Total/Hilang</strong></td>
-                    <td width="20%"><strong>Aksi</strong></td>
                   </tr>
                 </thead>
                 <tbody>
                   <?php
                   $query = $mysqli->query("SELECT * FROM barang");
+                  $whquery = $mysqli->query("SELECT * FROM gudang");
+                  $whdata = $whquery->fetch_object();
                   while ($barang = $query->fetch_object()) { 
-                    $barang_id = $barang->id_barang; 
+                    $barang_id = $barang->id_barang;
+                    $id_gudang = $barang->id_gudang; 
                     $counterQuery = $mysqli->query("SELECT 
                             COUNT(CASE WHEN TRIM(barang_unit.status) = '0' THEN 1 END) AS available,
                             COUNT(CASE WHEN TRIM(barang_unit.status) = '1' THEN 1 END) AS in_use,
                             COUNT(CASE WHEN TRIM(barang_unit.status) = '2' THEN 1 END) AS in_repair,
                             COUNT(CASE WHEN TRIM(barang_unit.status) = '3' THEN 1 END) AS lost
                         FROM barang_unit
-                        WHERE barang_unit.id_barang = '$barang_id';
-                    ");
+                        WHERE barang_unit.id_barang = '$barang_id' AND barang_unit.id_gudang = '$id_gudang'");
                     $counterData = $counterQuery->fetch_object();?>
                     <tr>
                       <td><?= $barang->nama_barang;  ?></td>
@@ -84,10 +86,6 @@
                       <td><?= $counterData->in_use;?></td>
                       <td><?= $counterData->in_repair;?></td>
                       <td><?= $counterData->lost;?></td>
-                      <td>
-                        <!-- <a href="add-item.php" class="btn btn-sm btn-danger">Hapus</a> -->
-                        <a href="add-unit.php?id=<?= $barang->id_barang; ?>" class="btn btn-sm btn-info">Tambah Unit</a>
-                      </td>
                     </td>
                   </tr>
                   <?php
@@ -103,6 +101,7 @@
   </div>
 </div>
 <?php include("asset/js.php"); ?>
+</body>
 <!-- Include DataTables JS -->
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script>
@@ -123,6 +122,4 @@
     });
   });
 </script>
-</body>
-
 </html>

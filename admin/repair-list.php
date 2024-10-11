@@ -7,6 +7,7 @@
     <?php elseif($alert==2): ?>
         <script>alert('Unit dengan nomor seri ini tidak ada');</script>
   <?php endif; ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -64,7 +65,6 @@
                     <td width="5%"><strong>Nama Barang</strong></td>
                     <td width="5%"><strong>Nomor Seri</strong></td>
                     <td width="5%"><strong>Gudang/User</strong></td>
-                    <td width="5%"><strong>Data diperbarui oleh</strong></td>
                     <td width="5%"><strong>Komentar</strong></td>
                     <td width="5%"><strong>Kondisi</strong></td>
                     <td width="5%"><strong>Aksi</strong></td>

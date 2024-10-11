@@ -1,6 +1,7 @@
 <?php  ?>
 <?php @$id = $_GET['id']; ?>
 <?php @$alert = $_GET['alert'];?>
+<?php @$error = $_GET['error']; ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,11 +11,19 @@
 </head>
 
 <body>
-    
+<?php if ($error==1): ?>
+        <script>alert('file tidak dapat dibaca');</script>
+    <?php elseif($error==2): ?>
+        <script>alert('file gagal diunggah');</script>
+        <?php elseif($error==3): ?>
+          <script>alert('upload gagal');</script>
+<?php endif; ?>
     <?php if ($alert==1): ?>
         <script>alert('Nomor Seri Unit Tidak Ada, cek penulisan');</script>
     <?php elseif($alert==2): ?>
-        <script>alert('Unit dengan nomor seri ini sedang tidak dipinjam');</script>
+        <script>alert('id_gudang tidak ada atau tidak sesuai');</script>
+    <?php elseif($alert==3): ?>
+          <script>alert('Pengembalian Massal Sukses');</script>
   <?php endif; ?>
   <!-- sidebar -->
   <?php include("asset/sidebar.php"); ?>
@@ -45,7 +54,7 @@
               </nav>
             </div>
             <div class="col-lg-6 col-5 text-right">
-              <a href="unit-lending.php" class="btn btn-sm btn-neutral">Kembali</a>
+              <a href="asset/mass-return-template.csv" download class="btn btn-sm btn-neutral">Template Tambah Unit Massal</a>
               <!-- <a href="#" class="btn btn-sm btn-neutral">Filters</a> -->
             </div>
           </div>
@@ -126,6 +135,39 @@
                 </form>
               </div>
            
+          </div>
+        </div>
+      </div>
+      <?php include("asset/footer.php"); ?>
+    </div>
+  
+<!-- Mass Upload -->
+<div class="container-fluid mt--6">
+      <div class="row">
+        <div class="col-xl-12 order-xl-1">
+          <div class="card">
+            <div class="card-header">
+              <div class="row align-items-center">
+                <div class="col-8">
+                    <h3 class="mb-0">Unggah Data Pengembalian Massal</h3>
+                </div>
+              </div>
+            </div>
+              <div class="card-body">
+                <form action="../backend/mass-return.php" method="post" enctype="multipart/form-data">
+                  <h6 class="heading-small text-muted mb-4">Unggah Data Pengembalian Massal</h6>
+                  <div class="pl-lg-4">
+                    <div class="row">
+                      <div class="col-lg-6">
+                      <input type="file" name="fileToUpload" id="fileToUpload" class="btn btn-sm btn-neutral">
+                      </div> 
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    <button class="btn btn-primary my-4">Pengembalian Unit Massal</button>
+                  </div>
+                </form>
+              </div>
           </div>
         </div>
       </div>

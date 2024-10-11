@@ -3,7 +3,7 @@
   <div class="row align-items-center justify-content-lg-between">
     <div class="col-lg-6">
       <div class="copyright text-center  text-lg-left  text-muted">
-        &copy; 2024<a href="#" class="font-weight-bold ml-1" target="_blank">Office & Warehouse Inventory Prototye Mk. 1</a>
+        &copy; 2024<a href="https://github.com/Yuuhanda" class="font-weight-bold ml-1" target="_blank">Office & Warehouse Inventory Prototye Mk. 1</a>
       </div>
     </div>
   </div>

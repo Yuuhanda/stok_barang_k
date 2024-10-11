@@ -1,19 +1,14 @@
-<?php
-     ?>
+<?php @$gudang = $_GET['gudang']; ?>
 <?php @$id = $_GET['id']; ?>
-<?php @$alert = $_GET['alert'];?>
+
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Barang Kondisi Rusak</title>
+  <title>Barang Detail</title>
   <?php include("asset/css.php"); ?>
 </head>
-<?php if ($alert==1): ?>
-        <script>alert('Nomor Seri Unit Tidak Ada');</script>
-    <?php elseif($alert==2): ?>
-        <script>alert('Unit dengan nomor seri ini tidak ada di gudang');</script>
-  <?php endif; ?>
+
 <body>
   <!-- sidebar -->
   <?php include("asset/sidebar.php"); ?>
@@ -24,6 +19,18 @@
     <!-- navbar -->
     <?php include("asset/navbar.php"); ?>
     <!-- navbar end -->
+
+
+<!-- Getting item name -->
+<?php
+$query = $mysqli->query("SELECT nama_barang FROM barang WHERE id_barang='$id'");
+$nbarang = $query->fetch_object();?>
+
+<!-- Getting warehouse name -->
+<?php $whquery = $mysqli->query("SELECT Nama_gudang FROM gudang WHERE id_gudang = '$gudang';");
+ $whdata = $whquery->fetch_object();
+ $whname = $whdata->Nama_gudang;?>
+
     <!-- Header -->
     <div class="header bg-primary pb-6">
       <div class="container-fluid">
@@ -34,7 +41,7 @@
                 <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                   <li class="breadcrumb-item"><a href="#"><i class="fa fa-home"></i></a></li>
                   <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Barang Kondisi Rusak</li>
+                  <li class="breadcrumb-item active" aria-current="page"><?php echo $nbarang->nama_barang; ?></li>
                 </ol>
               </nav>
             </div>
@@ -56,49 +63,66 @@
               </div>
             </div>
             <div class="table-responsive">
+              
+              </div> 
               <!-- Projects table -->
-              <table id="file" class="table striped" >
+              <table id="file" class="table striped">
                 <thead>
                   <tr>
-                    <td width="5%"><strong>Nama Barang</strong></td>
                     <td width="5%"><strong>Nomor Seri</strong></td>
+                    <td width="5%"><strong>Status</strong></td>
                     <td width="5%"><strong>Gudang/User</strong></td>
+                    <td width="5%"><strong>Data diperbarui oleh</strong></td>
                     <td width="5%"><strong>Komentar</strong></td>
                     <td width="5%"><strong>Kondisi</strong></td>
-                    <td width="5%"><strong>Aksi</strong></td>
                   </tr>
                 </thead>
                <tbody>
                   <?php
-                  $query = $mysqli->query("SELECT barang.nama_barang AS nama_barang, barang_unit.kondisi AS kondisi, barang_unit.serial_number AS serial_number ,barang_unit.id_unit AS id_unit, barang_unit.status AS status, user.nama_user AS nama_user, gudang.Nama_gudang AS nama_gudang, employee.emp_name AS emp_name, barang_unit.comment AS comment
-                        FROM barang_unit 
-                        LEFT JOIN barang 
-                          ON barang.id_barang = barang_unit.id_barang
-                        LEFT JOIN gudang
-                          ON barang_unit.id_gudang = gudang.id_gudang
-                        LEFT JOIN employee
-                          ON barang_unit.id_employee = employee.id_employee
-                        LEFT JOIN user
-                          ON user.id_user = barang_unit.id_user
-                        WHERE barang_unit.kondisi = '1' OR barang_unit.kondisi = '2' OR barang_unit.kondisi = '3'");
+                  $query = $mysqli->query("SELECT barang_unit.kondisi AS kondisi, barang_unit.serial_number AS serial_number ,barang_unit.id_unit AS id_unit, barang_unit.status AS status, user.nama_user AS nama_user, gudang.Nama_gudang AS nama_gudang, employee.emp_name AS emp_name, barang_unit.comment AS comment
+                          FROM barang_unit 
+                          LEFT JOIN barang 
+                            ON barang.id_barang = barang_unit.id_barang
+                          LEFT JOIN gudang
+                            ON barang_unit.id_gudang = gudang.id_gudang
+                          LEFT JOIN employee
+                            ON barang_unit.id_employee = employee.id_employee
+                          LEFT JOIN user
+                            ON user.id_user = barang_unit.id_user
+                          WHERE barang_unit.id_barang = $id AND barang_unit.id_gudang= $gudang");
                   while ($barang = $query->fetch_object()) { ?>
                     <tr>
                     <?php $stats_b = $barang->status;
                     $kondisi = $barang->kondisi;?>
-                        <td width="5%"><?= $barang->nama_barang; ?></td>
-                        <td width="5%"><?= $barang->serial_number; ?></td>                                       
+                        <td width="5%"><?= $barang->serial_number; ?></td>
+                        <?php if ($stats_b == 0): ?>
+                            <td width="5%">Tersedia/Disimpan</td>
+                        <?php elseif ($stats_b == 1): ?>
+                            <td width="5%">Dipinjam/Digunakan</td>
+                        <?php elseif ($stats_b == 2): ?>
+                            <td width="5%">Dalam Perbaikan</td>
+                        <?php elseif ($stats_b == 3): ?>
+                            <td width="5%">Rusak Total/Hilang</td>
+                        <?php else: ?>
+                            <td width="5%">Unknown status</td>
+                        <?php endif; ?>                                        
                         <?php                        
                         if ($stats_b == 0): ?>
                             <td width="5%"><?= $barang->nama_gudang; ?></td>
                         <?php elseif ($stats_b == 1): ?>
                             <td width="5%"><?= $barang->emp_name; ?></td>
                         <?php elseif ($stats_b == 2): ?>
-                            <td width="5%">Barang dalam perbaikan</td>
-                        <?php elseif ($stats_b == 3): ?>
                             <td width="5%">Tidak Tersedia</td>
+                        <?php elseif ($stats_b == 3): ?>
+                            <td width="5%"><?= $barang->nama_gudang; ?></td>
                         <?php else: ?>
                             <td width="5%">Status tidak diketahui</td>
                         <?php endif; ?>
+                        <?php if( $barang->nama_user==NULL){?>
+                          <td>DELETED USER</td>
+                          <?php } else {?>
+                        <td><?= $barang->nama_user; ?></td>
+                        <?php } ?>
                         <td><?= $barang->comment; ?></td>
                         <?php if ($kondisi == 0): ?>
                             <td width="5%">Tidak ada kerusakan</td>
@@ -112,14 +136,7 @@
                             <td width="5%">Rusak Total/Hilang</td>
                         <?php else: ?>
                             <td width="5%">Unknown status</td>
-                        <?php endif; ?>
-                        <td>
-                          <?php if($barang->status==0):?>  
-                          <a href="repair-unit.php?id=<?= $barang->id_unit ?>" class="btn btn-sm btn-info">Masukkan Untuk Perbaikan</a>
-                          <?php else:?>
-                          Barang tidak di gudang
-                          <?php endif?>
-                        </td>                           
+                        <?php endif; ?>                            
                     </td>
                   </tr>
                   <?php
@@ -127,14 +144,17 @@
               </tbody>
             </table>
             <!-- end table -->
+            
           </div>
         </div>
       </div>
     </div>
+    
     <?php include("asset/footer.php"); ?>
   </div>
 </div>
 <?php include("asset/js.php"); ?>
+
 <!-- Include DataTables JS -->
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script>
