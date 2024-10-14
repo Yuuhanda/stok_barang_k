@@ -47,7 +47,7 @@ $log_content = $nama_barang . " Unit ". $barang->serial_number . " dikembalikan 
 if ($qunit->num_rows != 0) {
         $mysqli->query("UPDATE barang_unit SET status = '0' , id_employee = NULL, id_gudang='$id_gudang', id_user ='$id_admin', comment ='$comment', kondisi= '$condition' WHERE id_unit = '$id_unit'");
         $mysqli->query("INSERT INTO `unit_log`(`id_unit`, `content`) VALUES ('$id_unit', '$log_content')");
-        header('Location: ../admin/return-unit.php');   
+        header('Location: ../admin/return-unit.php?alert=4');   
         exit();
 } else {
     echo "Query error: " . $mysqli->error; // Display the specific error message

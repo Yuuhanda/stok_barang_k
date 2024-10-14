@@ -45,6 +45,12 @@ if ($_SESSION['id_user'] == '') {
             </a>
           </li>
           <li class="nav-item">
+            <a class="nav-link active" href="lending-list.php">
+              <i class="ni ni-app text-green"></i>
+              <span class="nav-link-text">Daftar Peminjaman</span>
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link active" href="return-unit.php">
               <i class="ni ni-app text-green"></i>
               <span class="nav-link-text">Pengembalian</span>

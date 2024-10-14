@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Barang Detail</title>
+  <title>Riwayat Penggunaan Unit</title>
   <?php include("asset/css.php"); ?>
 </head>
 
@@ -68,11 +68,11 @@ $nbarang = $query->fetch_object();?>
                 </thead>
                 <tbody>
                   <?php
-                  $query = $mysqli->query("SELECT * FROM unit_log WHERE id_unit = $id");
+                  $query = $mysqli->query("SELECT * FROM unit_log WHERE id_unit = $id ORDER BY datetime DESC");
                   while ($log = $query->fetch_object()) {?>
                       <tr>
                           <td width="5%"><?= $log->content; ?></td>
-                          <td width="5%">TBD</td>
+                          <td width="5%"><?= $log->datetime?></td>
                       </tr>
                   <?php } ?>
                 </tbody>
@@ -108,6 +108,16 @@ $nbarang = $query->fetch_object();?>
       var length = $(this).val();
       table.page.len(length).draw();
     });
+
+    if ($.fn.DataTable.isDataTable('#file')) {
+        // Destroy the existing instance before reinitializing
+        $('#file').DataTable().destroy();
+    }
+
+    $('#file').DataTable({
+        "order": [[1, "desc"]] 
+    });
+
   });
 </script>
 </body>
