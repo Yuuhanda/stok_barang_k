@@ -42,7 +42,7 @@ $nama_barang = $data->nama_barang;
 $nGudang = $data->Nama_gudang;
 
 // Log content
-$log_content = $nama_barang . " Unit ". $barang->serial_number . " dikembalikan ke gudang" . $nGudang ;
+$log_content = $nama_barang . " Unit ". $barang->serial_number . " dikembalikan ke gudang " . $nGudang ;
 
 if ($qunit->num_rows != 0) {
         $mysqli->query("UPDATE barang_unit SET status = '0' , id_employee = NULL, id_gudang='$id_gudang', id_user ='$id_admin', comment ='$comment', kondisi= '$condition' WHERE id_unit = '$id_unit'");

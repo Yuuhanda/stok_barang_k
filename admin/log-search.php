@@ -5,7 +5,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Log Unit</title>
+  <title>Riwayat Unit</title>
   <?php include("asset/css.php"); ?>
 </head>
 
@@ -37,13 +37,14 @@
                 <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                   <li class="breadcrumb-item"><a href="#"><i class="fa fa-home"></i></a></li>
                   <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Log Unit</li>
+                    <li class="breadcrumb-item active" aria-current="page">Riwayat Unit</li>
 
                 </ol>
               </nav>
             </div>
             <div class="col-lg-6 col-5 text-right">
               <a href="dashboard.php" class="btn btn-sm btn-neutral">Kembali</a>
+              <a href="log-unit.php" class="btn btn-sm btn-neutral">Lihat semua log</a>
               <!-- <a href="#" class="btn btn-sm btn-neutral">Filters</a> -->
             </div>
           </div>

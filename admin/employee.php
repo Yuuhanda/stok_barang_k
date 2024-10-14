@@ -104,7 +104,7 @@
                       <th scope="row"><?= $user_data->email; ?></th>
                       <th scope="row"><?= $user_data->phone; ?></th>
                       <th scope="row"><?= $user_data->address; ?></th>
-                      <td>NO AUTHORITY</td>
+                      <td><a href="update-emp.php?id=<?= $user_data->id_employee; ?>" class="btn btn-sm btn-info">Ubah</a></td>
                     </tr>
                   <?php
                     }

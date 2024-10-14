@@ -40,7 +40,9 @@
                 </ol>
               </nav>
             </div>
-            
+            <div class="col-lg-6 col-5 text-right">
+              <a href="../backend/repair-export.php" class="btn btn-sm btn-neutral">Cetak Laporan Barang Sedang Dalam Perbaikan</a>
+            </div>
           </div>
         </div>
       </div>
@@ -64,7 +66,7 @@
                   <tr>
                     <td width="5%"><strong>Nama Barang</strong></td>
                     <td width="5%"><strong>Nomor Seri</strong></td>
-                    <td width="5%"><strong>Gudang/User</strong></td>
+                    <td width="5%"><strong>Admin</strong></td>
                     <td width="5%"><strong>Komentar</strong></td>
                     <td width="5%"><strong>Kondisi</strong></td>
                     <td width="5%"><strong>Aksi</strong></td>

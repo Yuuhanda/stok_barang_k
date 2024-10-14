@@ -36,15 +36,17 @@ $nama_barang = $data->nama_barang;
 $nGudang = $data->Nama_gudang;
 
 // Log content
-$log_content = $nama_barang . " Unit ". $barang->serial_number . " selesai diperbaiki dan dikembalikan ke gudang" . $nGudang ;
+$log_content = $nama_barang . " Unit ". $barang->serial_number . " selesai diperbaiki";
 
 
 if ($kondisi == 4) {
     $mysqli->query("UPDATE barang_unit SET status = '4', id_employee = NULL ,id_gudang='$id_gudang',id_user ='$id_admin', comment ='$comment_content', kondisi='$kondisi' WHERE id_unit = '$id_unit'");
+    $mysqli->query("INSERT INTO `unit_log`(`id_unit`, `content`) VALUES ('$id_unit', 'Unit Rusak Total')");
     header('Location: ../admin/repair-list.php');   
     exit();
 } elseif ($kondisi != 4) {
     $mysqli->query("UPDATE barang_unit SET status = '0', id_employee = NULL ,id_gudang='$id_gudang',id_user ='$id_admin', comment ='$comment_content', kondisi='$kondisi' WHERE id_unit = '$id_unit'");
+    $mysqli->query("INSERT INTO `unit_log`(`id_unit`, `content`) VALUES ('$id_unit', '$log_content')");
     header('Location: ../admin/repair-list.php');   
     exit();
 } 
