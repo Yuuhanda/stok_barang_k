@@ -1,11 +1,8 @@
-
-<?php @$id = $_GET['id']; ?>
-
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Barang Detail</title>
+  <title>Daftar Peminjaman</title>
   <?php include("asset/css.php"); ?>
 </head>
 
@@ -20,11 +17,6 @@
     <?php include("asset/navbar.php"); ?>
     <!-- navbar end -->
 
-
-
-<?php
-$query = $mysqli->query("SELECT nama_barang FROM barang WHERE id_barang='$id'");
-$nbarang = $query->fetch_object();?>
     <!-- Header -->
     <div class="header bg-primary pb-6">
       <div class="container-fluid">
@@ -35,7 +27,7 @@ $nbarang = $query->fetch_object();?>
                 <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                   <li class="breadcrumb-item"><a href="#"><i class="fa fa-home"></i></a></li>
                   <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                  <li class="breadcrumb-item active" aria-current="page"><?php echo $nbarang->nama_barang; ?></li>
+                  <li class="breadcrumb-item active" aria-current="page">Daftar Peminjaman</li>
                 </ol>
               </nav>
             </div>
@@ -64,26 +56,40 @@ $nbarang = $query->fetch_object();?>
                 <thead>
                   <tr>
                     <td width="5%"><strong>Nomor Seri</strong></td>
-                    <td width="5%"><strong>Status</strong></td>
-                    <td width="5%"><strong>Gudang/Karyawan</strong></td>
+                    <td width="5%"><strong>Karyawan</strong></td>
                     <td width="5%"><strong>Data diperbarui oleh</strong></td>
-                    <td width="5%"><strong>Komentar</strong></td>
+                    <td width="5%"><strong>Tanggal</strong></td>
                     <td width="5%"><strong>Kondisi</strong></td>
+                    <td width="5%"><strong>Aksi</strong></td>
                   </tr>
                 </thead>
                 <tbody>
                   <?php
                  
-                  $query = $mysqli->query("SELECT barang_unit.kondisi AS kondisi, barang_unit.serial_number AS serial_number, barang_unit.id_unit AS id_unit, barang_unit.status AS status,
-                             user.nama_user AS nama_user, gudang.Nama_gudang AS nama_gudang, employee.emp_name AS emp_name, barang_unit.comment AS comment
-                      FROM barang_unit
-                      LEFT JOIN barang ON barang.id_barang = barang_unit.id_barang
-                      LEFT JOIN gudang ON barang_unit.id_gudang = gudang.id_gudang
-                      LEFT JOIN employee ON barang_unit.id_employee = employee.id_employee
-                      LEFT JOIN user ON user.id_user = barang_unit.id_user
-                      WHERE barang_unit.id_barang = $id
-                      
-                  ");
+                  $query = $mysqli->query("SELECT bu.kondisi AS kondisi, bu.serial_number AS serial_number, bu.id_unit AS id_unit, bu.status AS status, u.nama_user AS nama_user, g.Nama_gudang AS nama_gudang, e.emp_name AS emp_name, bu.comment AS comment, ul.datetime AS datetime
+                    FROM 
+                        barang_unit bu
+                    LEFT JOIN 
+                        barang b ON b.id_barang = bu.id_barang
+                    LEFT JOIN 
+                        gudang g ON bu.id_gudang = g.id_gudang
+                    LEFT JOIN 
+                        employee e ON bu.id_employee = e.id_employee
+                    LEFT JOIN 
+                        user u ON u.id_user = bu.id_user
+                    LEFT JOIN 
+                        unit_log ul ON ul.id_unit = bu.id_unit
+                    INNER JOIN (
+                        SELECT 
+                            id_unit, MAX(datetime) AS latest_datetime
+                        FROM 
+                            unit_log
+                        GROUP BY 
+                            id_unit
+                    ) latest_logs ON ul.id_unit = latest_logs.id_unit AND ul.datetime = latest_logs.latest_datetime
+                    WHERE 
+                        bu.status = '1';
+                    ");
                 
                   while ($barang = $query->fetch_object()) {
                       $status_text = '';
@@ -135,11 +141,11 @@ $nbarang = $query->fetch_object();?>
                       ?>
                       <tr>
                           <td width="5%"><?= $barang->serial_number; ?></td>
-                          <td width="5%"><?= $status_text; ?></td>
                           <td width="5%"><?= $location; ?></td>
                           <td width="5%"><?= $barang->nama_user ?? 'DELETED USER'; ?></td>
-                          <td><?= $barang->comment; ?></td>
+                          <td><?= $barang->datetime; ?></td>
                           <td width="5%"><?= $kondisi_text; ?></td>
+                          <td><a href="return-select.php?id=<?= $barang->id_unit; ?>" class="btn btn-sm btn-info">Kembalikan Unit Unit</a></td>
                       </tr>
                   <?php } ?>
                 </tbody>

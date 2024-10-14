@@ -1,5 +1,6 @@
 <?php  ?>
 <?php @$id = $_GET['id']; ?>
+<?php @$alert = $_GET['alert']; ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,14 +10,17 @@
 </head>
 
 <body>
-  <!-- sidebar -->
-  <?php include("asset/sidebar.php"); ?>
-  <!-- sidebar end -->
+<!-- sidebar -->
+<?php include("asset/sidebar.php"); ?>
+<!-- sidebar end -->
+<!-- Main content -->
+<div class="main-content" id="panel">
+<!-- navbar -->
+<?php include("asset/navbar.php"); ?>
 
-  <!-- Main content -->
-  <div class="main-content" id="panel">
-    <!-- navbar -->
-    <?php include("asset/navbar.php"); ?>
+
+
+
     <!-- navbar end -->
     <?php
 $query_unit = $mysqli->query("SELECT * FROM barang_unit WHERE id_barang = '$id' AND id_gudang IS NOT NULL");
@@ -27,7 +31,9 @@ $nbarang = $query->fetch_object();
 $query_unit = $mysqli->query("SELECT * FROM barang_unit WHERE id_barang = '$id' AND id_gudang IS NOT NULL");
 
 ?>
- 
+    <?php if ($alert==1): ?>
+        <script>alert('Peminjaman Sukses ditambahkan');</script>
+    <?php endif ?>
     <!-- Header -->
     <div class="header bg-primary pb-6">
       <div class="container-fluid">
@@ -87,11 +93,10 @@ $query_unit = $mysqli->query("SELECT * FROM barang_unit WHERE id_barang = '$id' 
                         <div class="form-group">
                           <label class="form-control-label" for="input-serial-number">Nomor Seri</label>
                           <select class="form-control" name="id_unit" id="id_unit" required>
-                              <option value="">Pilih Unit</option>
-                                  <?php while ($unit_data = $unit_q->fetch_object()): ?>
-                                    <option value="<?= $unit_data->id_unit; ?>"><?= $unit_data->serial_number; ?></option>
-                                  <?php endwhile; ?>
-                              
+                            <option value="" style="padding: 0px;">Pilih Unit</option>
+                            <?php while ($unit_data = $unit_q->fetch_object()): ?>
+                              <option value="<?= $unit_data->id_unit; ?>"><?= $unit_data->serial_number; ?></option>
+                            <?php endwhile; ?>
                           </select>
                         </div>
                       </div>
@@ -128,7 +133,80 @@ $query_unit = $mysqli->query("SELECT * FROM barang_unit WHERE id_barang = '$id' 
     </div>
   </div>
 
+
   <?php include("asset/js.php"); ?>
 </body>
+<!-- Include Select2 CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 
+<!-- Include jQuery and Select2 JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<!-- Initialize Select2 -->
+<script>
+  $(document).ready(function() {
+    $('#id_unit').select2({
+      placeholder: "Pilih Unit",
+      allowClear: true,
+      dropdownAutoWidth: true,
+      width: 'auto'
+    });
+  });
+</script>
+
+
+<style>
+  .select2-results__option:first-child {
+    padding: 15px;  /* Adjust padding for empty option height */
+    height: 50px;   /* Set height for the empty option */
+  }
+
+  .select2-selection__rendered {
+    padding: 15px;  /* Increase padding for the selected item */
+    height: auto;   /* Allow dynamic height based on padding */
+    line-height: 2; /* Adjust for proper vertical spacing */
+  }
+</style>
+
+<style>
+  /* Adjusting the height and padding for select input */
+  select.form-control {
+    height: 50px; /* Increase height */
+    padding: 10px; /* Add padding for better spacing */
+    font-size: 16px; /* Adjust font size */
+    line-height: 1.5; /* Improve line spacing */
+  }
+
+  /* For Select2 dropdown (if you're using it) */
+  .select2-container .select2-selection--single {
+    height: 50px; /* Match the select field height */
+    padding: 10px; /* Add padding to match */
+    font-size: 16px;
+  }
+
+  /* Ensure that the placeholder text is aligned properly */
+  .select2-selection__rendered {
+    line-height: 2.5 !important; /* Adjust line height for placeholder */
+  }
+</style>
+
+
+<!-- Custom styles for Select2 dropdown and option text -->
+<style>
+  .select2-container .select2-dropdown {
+    max-height: 300px; /* Adjust height to fit text */
+  }
+
+  .select2-results__options {
+    max-height: 300px;
+  }
+
+  .select2-results__option {
+    line-height: 1.5; /* Increase line height for text clarity */
+  }
+
+  .select2-container--default .select2-selection--single .select2-selection__rendered {
+    white-space: normal; /* Ensure long text fits */
+  }
+</style>
 </html>
