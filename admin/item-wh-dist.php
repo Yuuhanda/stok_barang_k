@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Master Item</title>
+  <title>Lokasi Barang</title>
   <?php include("asset/css.php"); ?>
 </head>
 
@@ -18,6 +18,8 @@
     <?php include("asset/navbar.php"); ?>
     <!-- navbar end -->
 
+<?php $barangQ= $mysqli->query("SELECT * FROM barang WHERE id_barang = $id");?>
+<?php $barangData = $barangQ->fetch_object();?>
     <!-- Header -->
     <div class="header bg-primary pb-6">
       <div class="container-fluid">
@@ -28,12 +30,9 @@
                 <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                   <li class="breadcrumb-item"><a href="#"><i class="fa fa-home"></i></a></li>
                   <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Master Inventory</li>
+                  <li class="breadcrumb-item active" aria-current="page">Lokasi Barang <?=$barangData->nama_barang?></li>
                 </ol>
               </nav>
-            </div>
-            <div class="col-lg-6 col-5 text-right">
-              <a href="add-item.php" class="btn btn-sm btn-neutral">Tambah Barang</a>
             </div>
           </div>
         </div>

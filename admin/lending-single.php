@@ -152,6 +152,15 @@ $query_unit = $mysqli->query("SELECT * FROM barang_unit WHERE id_barang = '$id' 
       width: 'auto'
     });
   });
+
+  $(document).ready(function() {
+    $('#empid').select2({
+      placeholder: "Pilih Karyawan",
+      allowClear: true,
+      dropdownAutoWidth: true,
+      width: 'auto'
+    });
+  });
 </script>
 
 

@@ -99,6 +99,7 @@
                       ?>
                         <tr>
                           <th scope="row"><?= $gudang_data->Nama_gudang; ?></th>
+                          <th scope="row"><?= $gudang_data->id_gudang; ?></th>
                           <td>
                             <a href="update-wh.php?id=<?= $gudang_data->id_gudang; ?>" class="btn btn-sm btn-info">Ubah</a>
                           </td>

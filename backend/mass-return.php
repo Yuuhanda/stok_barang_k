@@ -93,7 +93,7 @@ if (isset($_FILES['fileToUpload']) && $_FILES['fileToUpload']['error'] == UPLOAD
             $id_unit = $id_f_unit->id_unit;
 
             // Log content
-            $log_content = $nama_barang . " Unit ". $unit['serial_number'] . " dikembalikan ke gudang" . $nGudang ;
+            $log_content = $nama_barang . " Unit ". $unit['serial_number'] . " dikembalikan ke gudang " . $nGudang ;
 
             // Proceed with the insertion since id_gudang and serial_number is valid
             $query = "UPDATE `barang_unit` 
