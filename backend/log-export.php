@@ -2,13 +2,24 @@
 // Include FPDF library
 require('../vendor/fpdf/fpdf.php');
 
+if(isset($_GET['start_date'])){
+    //Get id if exist
+    $start_date = $_GET['start_date'];}
 
+if(isset($_GET['end_date'])){
+    //Get id if exist
+    $end_date = $_GET['end_date'];}
 
-$start_date = isset($_GET['start_date']) ? $_GET['start_date'] : '';
-$end_date = isset($_GET['end_date']) ? $_GET['end_date'] : '';
 if(isset($_GET['id'])){
 //Get id if exist
 $id = $_GET['id'];}
+
+if (!empty($start_date) && !empty($end_date)) {
+    // Adjust start date to the beginning of the day and end date to the end of the day
+    $start_date .= ' 00:00:00';
+    $end_date .= ' 23:59:59';
+
+}
 
 // Create a new instance of the FPDF class
 $pdf = new FPDF('L', 'mm', 'A4');
@@ -39,10 +50,16 @@ if ($mysqli->connect_error) {
     die("Connection failed: " . $mysqli->connect_error);
 }
 
-if(isset($id)){
+if(isset($id) && isset($start_date)){
 // Fetch the unit log data
-$query = $mysqli->query("SELECT content, datetime FROM unit_log WHERE id_unit = $id ORDER BY datetime DESC");
-} else {
+$query = $mysqli->query("SELECT content, datetime FROM unit_log WHERE id_unit = $id  AND datetime BETWEEN '$start_date' AND '$end_date' ORDER BY datetime DESC");
+} elseif(!isset($id) && isset($start_date)){
+    $query = $mysqli->query("SELECT content, datetime FROM unit_log WHERE datetime BETWEEN '$start_date' AND '$end_date' ORDER BY datetime DESC");
+}  
+elseif(isset($id) && !isset($start_date)){
+    $query = $mysqli->query("SELECT content, datetime FROM unit_log WHERE id_unit = $id ORDER BY datetime DESC");
+} 
+else {
     $query = $mysqli->query("SELECT content, datetime FROM unit_log ORDER BY datetime DESC");
 }
 // Set font for table rows
