@@ -43,54 +43,60 @@ else{}?>
                 <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                   <li class="breadcrumb-item"><a href="#"><i class="fa fa-home"></i></a></li>
                   <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                  <?php if(isset($id)):?>
-                  <li class="breadcrumb-item active" aria-current="page">Log Riwayat <?php echo $nbarang->nama_barang; ?> UNIT <?=$unit_data->serial_number?></li>
-                  <?php else:?>
-                  <li class="breadcrumb-item active" aria-current="page">Log Semua Unit</li>
-                  <?php endif?>
+                      <li class="breadcrumb-item active" aria-current="page">Log Riwayat Unit</li>
                 </ol>
               </nav>
             </div>
             <div class="col-lg-6 col-5 text-right">
-            <?php if ($id != NULL && isset($_GET['start_date']) && isset($_GET['end_date'])): ?>
-                <a href="../backend/log-export.php?id=<?= $id; ?>&start_date=<?= $_GET['start_date']; ?>&end_date=<?= $_GET['end_date']; ?>" class="btn btn-sm btn-neutral">Cetak Laporan</a>
-            <?php elseif ($id == NULL && isset($_GET['start_date']) && isset($_GET['end_date'])): ?>
+            <?php if (isset($_GET['id']) && $_GET['id'] != '' && isset($_GET['start_date']) && isset($_GET['end_date'])): ?>
+                <!-- If GET 'id' is not empty and both 'start_date' and 'end_date' are set -->
+                <a href="../backend/log-export.php?id=<?= $_GET['id']; ?>&start_date=<?= $_GET['start_date']; ?>&end_date=<?= $_GET['end_date']; ?>" class="btn btn-sm btn-neutral">Cetak Laporan</a>
+            <?php elseif (!isset($_GET['id']) && isset($_GET['start_date']) && isset($_GET['end_date'])): ?>
+                <!-- If GET 'id' is empty, but both 'start_date' and 'end_date' are set -->
                 <a href="../backend/log-export.php?start_date=<?= $_GET['start_date']; ?>&end_date=<?= $_GET['end_date']; ?>" class="btn btn-sm btn-neutral">Cetak Laporan</a>
-            <?php elseif ($id != NULL && !isset($_GET['start_date']) && !isset($_GET['end_date'])): ?>
-                <a href="../backend/log-export.php?id=<?= $id; ?>" class="btn btn-sm btn-neutral">Cetak Laporan</a>
+            
+            <?php elseif (isset($_GET['id']) && $_GET['id'] != '' && (!isset($_GET['start_date']) || !isset($_GET['end_date']))): ?>
+                <!-- If GET 'id' is set, but 'start_date' or 'end_date' are not set -->
+                <a href="../backend/log-export.php?id=<?= $_GET['id']; ?>" class="btn btn-sm btn-neutral">Cetak Laporan</a>
+
             <?php else: ?>
+                <!-- If none of the above conditions are met -->
                 <a href="../backend/log-export.php" class="btn btn-sm btn-neutral">Cetak Laporan</a>
             <?php endif; ?>
+
 
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- Page content -->
+    <!-- Page content -->   
     <div class="container-fluid mt--6">
       <div class="row">
         <div class="col-xl-12">
           <div class="card">
             <div class="card-header border-0">
               <!-- Date filter form -->
-            <form method="GET" action="">
-              <div class="row">
-                <div class="col-md-1">
-                  <label for="start_date">Start Date</label>
-                  <input type="hidden" name="id" id="id" class="form-control small-input" value="<?= isset($_GET['id']) ? $_GET['id'] : ''; ?>">
-                  <input type="date" name="start_date" id="start_date" class="form-control small-input" value="<?= isset($_GET['start_date']) ? $_GET['start_date'] : ''; ?>">
+              <form method="GET" action="">
+                <div class="row">
+                  <div class="col-md-1">
+                    <label for="start_date">Start Date</label>
+                    <?php if (isset($_GET['id']) && $_GET['id'] != ''): ?>
+                      <input type="hidden" name="id" id="id" class="form-control small-input" value="<?= $_GET['id']; ?>">
+                    <?php endif; ?>
+                    <input type="date" name="start_date" id="start_date" class="form-control small-input" value="<?= isset($_GET['start_date']) ? $_GET['start_date'] : ''; ?>">
+                  </div>
+                  <div class="col-md-1">
+                    <label for="end_date">End Date</label>
+                    <input type="date" name="end_date" id="end_date" class="form-control small-input" value="<?= isset($_GET['end_date']) ? $_GET['end_date'] : ''; ?>">
+                  </div>
+                  <div class="col-md-1">
+                    <label>&nbsp;</label>
+                    <button type="submit" class="btn-primary btn-block small-btn">Filter</button>
+                  </div>
                 </div>
-                <div class="col-md-1">
-                  <label for="end_date">End Date</label>
-                  <input type="date" name="end_date" id="end_date" class="form-control small-input" value="<?= isset($_GET['end_date']) ? $_GET['end_date'] : ''; ?>">
-                </div>
-                <div class="col-md-1">
-                  <label>&nbsp;</label>
-                  <button type="submit" class=" btn-primary btn-block small-btn">Filter</button>
-                </div>
-              </div>
-            </form>
+              </form>
+
             <!-- End of Date filter form -->
 
             
