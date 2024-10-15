@@ -21,7 +21,7 @@ $pdf->AddPage();
 
 // Set title
 $pdf->SetFont('Arial', 'B', 12);
-$pdf->Cell(0, 10, 'Barang Repair Report', 0, 1, 'C');
+$pdf->Cell(0, 10, 'Laporan Unit Dalam Perbaikan', 0, 1, 'C');
 $pdf->Ln(5);
 
 // Set table header

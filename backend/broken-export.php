@@ -21,13 +21,13 @@ $pdf->AddPage();
 
 // Set title
 $pdf->SetFont('Arial', 'B', 12);
-$pdf->Cell(0, 10, 'Barang Repair Report', 0, 1, 'C');
+$pdf->Cell(0, 10, 'Laporan Unit Rusak', 0, 1, 'C');
 $pdf->Ln(5);
 
 // Set table header
 $pdf->SetFont('Arial', 'B', 9);
 $pdf->Cell(50, 9, 'Nama Barang', 1);
-$pdf->Cell(38, 9, 'Nomor Seri', 1);
+$pdf->Cell(40, 9, 'Nomor Seri', 1);
 $pdf->Cell(130, 9, 'Komentar', 1);
 $pdf->Cell(56, 9, 'Kondisi', 1);
 $pdf->Ln();
@@ -61,7 +61,7 @@ while ($barang = $query->fetch_object()) {
 
     // Fill data in the table
     $pdf->Cell(50, 9, $barang->nama_barang, 1);
-    $pdf->Cell(38, 9, $barang->serial_number, 1);
+    $pdf->Cell(40, 9, $barang->serial_number, 1);
     $pdf->Cell(130, 9, $barang->comment, 1);
     $pdf->Cell(56, 9, $kondisi_text, 1);
     $pdf->Ln();
