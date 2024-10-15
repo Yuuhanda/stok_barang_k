@@ -112,7 +112,11 @@ while ($barang = $query->fetch_object()) {
     $pdf->Cell(70, 10, $kondisi_text, 1);
     $pdf->Ln();
 }
+ //data counter
+$counter = $query->num_rows;
 
+$pdf->Cell(45, 10, 'Total Data', 1);
+$pdf->Cell(60, 10, $counter, 1, 1, 'R');
 // Output the PDF file
 $pdf->Output('D', 'laporan_peminjaman' . time() . '.pdf');
 ?>

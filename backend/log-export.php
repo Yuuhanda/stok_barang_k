@@ -72,6 +72,12 @@ while ($log = $query->fetch_object()) {
     $pdf->Ln();
 }
 
+// Data Counter
+$counter = $query->num_rows;
+
+$pdf->Cell(200, 10, 'Total Data', 1);
+$pdf->Cell(40, 10, $counter, 1, 1, 'R');
+
 // Output the PDF
 $pdf->Output('D', 'log_riwayat_unit' . time() . '.pdf');
 

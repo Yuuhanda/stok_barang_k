@@ -33,6 +33,7 @@
             </div>
             <div class="col-lg-6 col-5 text-right">
               <a href="../backend/lending-export.php" class="btn btn-sm btn-neutral">Cetak Laporan Peminjaman</a>
+              <a href="../backend/lending-excel.php" class="btn btn-sm btn-neutral">Ekspor Excel(.XLSX) Laporan Peminjaman</a>
             </div>
           </div>
         </div>

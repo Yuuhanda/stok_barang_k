@@ -67,6 +67,13 @@ while ($barang = $query->fetch_object()) {
     $pdf->Ln();
 }
 
+// Data counter
+$counter = $query->num_rows;
+
+
+$pdf->Cell(50, 10, 'Total Data', 1);
+$pdf->Cell(40, 10, $counter, 1, 1, 'R');
+
 // Output the PDF
 $pdf->Output('D', 'laporan_barang_rusak' . time() . '.pdf'); // Display PDF in browser
 
