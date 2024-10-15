@@ -59,7 +59,7 @@
             <div class="card-header">
               <div class="row align-items-center">
                 <div class="col-8">
-                    <h3 class="mb-0">Cari Barang</h3>
+                    <h3 class="mb-0">Cari Riwayat Unit</h3>
                 </div>
               </div>
             </div>
