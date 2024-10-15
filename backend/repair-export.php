@@ -66,6 +66,10 @@ while ($barang = $query->fetch_object()) {
     $pdf->Cell(56, 9, $kondisi_text, 1);
     $pdf->Ln();
 }
+$counter = $query->num_rows;
+
+$pdf->Cell(50, 10, 'Total Data', 1);
+$pdf->Cell(38, 10, $counter, 1, 1, 'R');
 
 // Output the PDF
 $pdf->Output('D', 'laporan_perbaikan_barang' . time() . '.pdf'); // Display PDF in browser

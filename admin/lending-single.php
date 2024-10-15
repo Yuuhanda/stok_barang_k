@@ -95,7 +95,27 @@ $query_unit = $mysqli->query("SELECT * FROM barang_unit WHERE id_barang = '$id' 
                           <select class="form-control" name="id_unit" id="id_unit" required>
                             <option value="" style="padding: 0px;">Pilih Unit</option>
                             <?php while ($unit_data = $unit_q->fetch_object()): ?>
-                              <option value="<?= $unit_data->id_unit; ?>"><?= $unit_data->serial_number; ?></option>
+                              <?php switch ($unit_data->kondisi) {
+                                  case 0:
+                                      $kondisi_text = "Tidak ada kerusakan";
+                                      break;
+                                  case 1:
+                                      $kondisi_text = "Kerusakan Ringan";
+                                      break;
+                                  case 2:
+                                      $kondisi_text = "Kerusakan Sedang. Komponen Hilang";
+                                      break;
+                                  case 3:
+                                      $kondisi_text = "Kerusakan Berat. Tidak bisa digunakan";
+                                      break;
+                                  case 4:
+                                      $kondisi_text = "Rusak Total/Hilang";
+                                      break;
+                                  default:
+                                      $kondisi_text = "Unknown status";
+                                      break;
+                              }?>
+                              <option value="<?= $unit_data->id_unit; ?>"><?= $unit_data->serial_number; ?>, <?=$kondisi_text?></option>
                             <?php endwhile; ?>
                           </select>
                         </div>
