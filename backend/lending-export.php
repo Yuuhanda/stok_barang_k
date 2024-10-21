@@ -11,7 +11,7 @@ $pdf->AddPage();
 $pdf->SetFont('Arial', 'B', 12);
 
 // Title
-$pdf->Cell(0, 10, 'Unit Log Report', 0, 1, 'C');
+$pdf->Cell(0, 10, 'Daftar Peminjaman Report', 0, 1, 'C');
 
 // Add some space
 $pdf->Ln(10);
@@ -20,6 +20,7 @@ $pdf->Ln(10);
 $pdf->SetFont('Arial', 'B', 10);
 
 // Table headers
+$pdf->Cell(10, 10, 'No', 1);
 $pdf->Cell(45, 10, 'Nomor Seri', 1);
 $pdf->Cell(60, 10, 'Karyawan', 1);
 $pdf->Cell(60, 10, 'Data diperbarui oleh', 1);
@@ -54,12 +55,12 @@ $query = $mysqli->query("SELECT bu.kondisi AS kondisi, bu.serial_number AS seria
     ) latest_logs ON ul.id_unit = latest_logs.id_unit AND ul.datetime = latest_logs.latest_datetime
     WHERE 
         bu.status = '1';");
-
+$row_num = 1;
 // Loop through the records and output them to the PDF
 while ($barang = $query->fetch_object()) {
     $status_text = '';
     $location = '';
-
+    
     switch ($barang->status) {
         case 0:
             $status_text = "Tersedia/Disimpan";
@@ -105,18 +106,16 @@ while ($barang = $query->fetch_object()) {
     }
 
     // Print each row
+    $pdf->Cell(10, 10, $row_num, 1);
     $pdf->Cell(45, 10, $barang->serial_number, 1);
     $pdf->Cell(60, 10, $location, 1);
     $pdf->Cell(60, 10, $barang->nama_user ?? 'DELETED USER', 1);
     $pdf->Cell(38, 10, $barang->datetime, 1);
     $pdf->Cell(70, 10, $kondisi_text, 1);
     $pdf->Ln();
+    $row_num++;
 }
- //data counter
-$counter = $query->num_rows;
-
-$pdf->Cell(45, 10, 'Total Data', 1);
-$pdf->Cell(60, 10, $counter, 1, 1, 'R');
+ 
 // Output the PDF file
 $pdf->Output('D', 'laporan_peminjaman' . time() . '.pdf');
 ?>
